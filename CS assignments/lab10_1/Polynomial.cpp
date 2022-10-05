@@ -29,7 +29,7 @@ void Polynomial::print() {
 		if (polyCoef != 0) {
 			cout << polyCoef << "x^" << polyDeg;
 
-			// print add sign until last polynomial
+			// Print add sign until last polynomial
 			if (polyDeg - 1 > -1) {
 				cout << " + ";
 			}
