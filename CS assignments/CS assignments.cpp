@@ -1,39 +1,48 @@
-// 10380722, Anthony, Chen
-// Date: 8/30/2022
-// Lab1, Problem2
-
 #include <iostream>
 #include <fstream>
 #include <iomanip>
 #include <string>
 using namespace std;
 
-int main2()
-{
-    ifstream infile;
-    infile.open("data1.txt");
-    int id, score;
-    string first_name, last_name, full_name;
-    int scoreArr[100];
-    int i = 0;
+class person {
+private:
+    string name;
+    int age;
+public:
+    person(): name(" "), age(0){}
+    person(string n, int a) : name(n), age(a){}
+    friend istream& operator >>(istream& is, person& p);
+    friend ostream& operator <<(ostream& os, const person& p);
+    person& operator++();
+};
 
-    // recieve inputs
-    cout << "   ID  First Name Last Name Score" << endl;
-    cout << "---------------------------------" << endl;
-    while (!infile.eof()) {
-        infile >> id >> first_name >> last_name >> score;
-        scoreArr[i++] = score;
-        cout << id << setw(10) << first_name << setw(10) << last_name << setw(6) << score << endl;
-    }
-    
-    int number_of_scores = i;
-    int max = scoreArr[0];
-    for (int x = 0; x < number_of_scores; x++) {
-        if (scoreArr[x] > max) {
-            max = scoreArr[x];
-        }
-    }
-    cout << "Max no : " << max;
+person& person::operator++() {
+    age++;
+    return *this;
+}
+
+istream& operator>>(istream& is, person& p)
+{
+    is >> p.name >> p.age;
+    return is;
+}
+
+ostream& operator<<(ostream& os, const person& p)
+{
+    cout << "You are " << p.name << " and " << p.age << " years old.";
+    return os;
+}
+
+
+int main()
+{
+    person ps;
+    // read data into ps
+    cin >> ps;
+    // print data from ps
+    ++ps;
+    cout << ps;
+
 
     return 0;
 }

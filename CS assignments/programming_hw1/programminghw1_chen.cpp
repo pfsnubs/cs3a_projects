@@ -31,6 +31,7 @@ using namespace std;
 const string LINE_HEADER = "----------------------------------------------------";
 const string EQUAL_HEADER = "====================================================";
 const string HALF_EQUAL_HEADER = "=========================";
+const int MAX_COURSES = 3;
 
 // prototype fxns
 void showAllCourses(int totalCourses, Course* courseList);
@@ -50,7 +51,41 @@ void showAllCourses(int totalCourses, Course* courseList){
             setw(5) << studentSelected.getScore()  << endl;
       } 
       cout << EQUAL_HEADER << endl;
+      cout << endl;
   }
+}
+
+// prototype fxn
+void studentAllCourses(int totalCourses, Course* courseList);
+void studentAllCourses(int totalCourses, Course* courseList) {
+    
+    // go through all courses and count occurrence of a certain student
+    // we know every student has a unique name so we don't need to worry
+    // about dupes, just make a loop through each course list
+    for (int i = 0; i < totalCourses; i++) {
+        Course courseSelected = courseList[i];
+        for (int j = 0; j < courseSelected.getTotalStudents(); j++) {
+            student studentSelected = courseSelected.studentList[j];
+            string studentName = studentSelected.getName();
+            int coursesEntered = 0;
+
+            // loop through other courses to find existence
+            for (int i = 0; i < totalCourses; i++) {
+                // make sure course searched is not the one we are in
+                Course courseSelected = courseList[i];
+                if (courseSelected.checkStudentExists(studentName)) {
+                    coursesEntered++;
+                }
+            }
+
+            if (coursesEntered == MAX_COURSES) {
+                cout << "student max " << studentName << endl;
+            }
+
+
+        }
+
+    }
 }
 
 int main()
@@ -83,7 +118,20 @@ int main()
     cin >> input;
     cout << endl;
 
-    showAllCourses(totalCourses, courseList);
+    switch (input) {
+    case 1:
+        showAllCourses(totalCourses, courseList);
+        break;
+    case 2:
+        studentAllCourses(totalCourses, courseList);
+        break;
+    case 3:
+        break;
+    case 4:
+        break;
+    }
+
+    
     
 
     return 0;

@@ -79,3 +79,14 @@ int Course::getTotalStudents() {
 string Course::getCourseName() {
     return courseName;
 };
+
+bool Course::checkStudentExists(string name) {
+    bool exists = false;
+    for (int i = 0; i < totalStudents; i++) {
+        if (studentList[i].getName() == name) {
+            exists = true;
+            break;
+        }
+    }
+    return exists;
+}

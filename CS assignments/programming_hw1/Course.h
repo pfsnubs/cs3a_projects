@@ -18,6 +18,7 @@ struct Course {
     void setCourseName(string newName);
     int getTotalStudents();
     string getCourseName();
+    bool checkStudentExists(string name);
 };
 
 

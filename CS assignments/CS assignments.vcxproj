@@ -143,11 +143,13 @@
     <Text Include="programming_hw1\python.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="lab10_1\Polynomial.cpp" />
-    <ClCompile Include="lab10_1\lab101_chen.cpp" />
+    <ClCompile Include="programming_hw1\Course.cpp" />
+    <ClCompile Include="programming_hw1\programminghw1_chen.cpp" />
+    <ClCompile Include="programming_hw1\student.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="lab10_1\Polynomial.h" />
+    <ClInclude Include="programming_hw1\Course.h" />
+    <ClInclude Include="programming_hw1\student.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
