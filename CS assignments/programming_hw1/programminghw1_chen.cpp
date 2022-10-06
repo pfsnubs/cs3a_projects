@@ -27,6 +27,32 @@ If there are only first and second place scores, you only need to print them out
 
 using namespace std;
 
+// constants
+const string LINE_HEADER = "----------------------------------------------------";
+const string EQUAL_HEADER = "====================================================";
+const string HALF_EQUAL_HEADER = "=========================";
+
+// prototype fxns
+void showAllCourses(int totalCourses, Course* courseList);
+
+// functions
+void showAllCourses(int totalCourses, Course* courseList){
+  // go through all course list and print student info
+  for (int i = 0; i < totalCourses; i++) {
+      Course courseSelected = courseList[i];
+      cout << "Course : " << courseSelected.getCourseName() << endl;
+      cout << LINE_HEADER << endl;
+      for (int j = 0; j < courseSelected.getTotalStudents(); j++) {
+          // print out student data
+          student studentSelected = courseSelected.studentList[j]; 
+          cout << setw(10) << studentSelected.getId() <<
+            setw(20) << studentSelected.getName() <<
+            setw(5) << studentSelected.getScore()  << endl;
+      } 
+      cout << EQUAL_HEADER << endl;
+  }
+}
+
 int main()
 {
     int totalCourses;
@@ -46,9 +72,19 @@ int main()
         cout << endl;
     }
 
-    for (int i = 0; i < courseList[0].getTotalStudents(); i++) {
-        cout << "clist " << courseList[0].studentList[i].getName() << endl;
-    }
+    cout << HALF_EQUAL_HEADER << " Menu " << HALF_EQUAL_HEADER << endl;
+    cout << "1. Show all course lists" << endl;
+    cout << "2. List of students who take all courses" << endl;
+    cout << "3. List of students who take two courses" << endl;
+    cout << "4. Print out top three scores for each course" << endl;
+
+    int input;
+    cout << "---> select : ";
+    cin >> input;
+    cout << endl;
+
+    showAllCourses(totalCourses, courseList);
+    
 
     return 0;
 }
