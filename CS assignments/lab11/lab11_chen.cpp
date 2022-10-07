@@ -82,8 +82,8 @@ bool operator>=(const Rational& a, const Rational& b) {
 	Rational simplified_B = b;
 	simplified_A.simplify();
 	simplified_B.simplify();
-	return (a.numerator == b.numerator) && (a.denominator == b.denominator)
-		|| (a.numerator > b.numerator) && (a.denominator <= b.denominator);
+	return simplified_A == simplified_B
+		|| simplified_A > simplified_B;
 }
 
 bool operator<=(const Rational& a, const Rational& b) {
@@ -91,8 +91,8 @@ bool operator<=(const Rational& a, const Rational& b) {
 	Rational simplified_B = b;
 	simplified_A.simplify();
 	simplified_B.simplify();
-	return (a.numerator == b.numerator) && (a.denominator == b.denominator)
-		|| (a.numerator < b.numerator) && (a.denominator >= b.denominator);
+	return simplified_A == simplified_B
+		|| simplified_A < simplified_B;
 }
 
 int main()

@@ -37,22 +37,16 @@
     <Text Include="B.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="programming_hw1\Course.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="programming_hw1\student.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
+    <ClCompile Include="lab11\lab11_chen.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="lab11\Rational.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="programming_hw1\Course.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="programming_hw1\programminghw1_chen.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="programming_hw1\student.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
+    <ClInclude Include="lab11\Rational.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
