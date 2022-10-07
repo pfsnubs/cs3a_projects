@@ -11,7 +11,10 @@ using namespace std;
 // friend fxns of Rational class
 
 istream& operator>>(istream& is, Rational& a) {
-	return is >> a.numerator >> a.denominator;
+	char temp;
+	is >> a.numerator >> temp >> a.denominator;
+	a.simplify();
+	return is;
 }
 
 ostream& operator<<(ostream& os, const Rational& a) {
@@ -22,7 +25,6 @@ Rational operator+(const Rational& a, const Rational& b) {
 	//Using (a/b + c/d = (a * d + b * c) / (b * d)) 
 	Rational temp((b.numerator * a.denominator + a.numerator * b.denominator),
 		(b.denominator * a.denominator));
-	temp.simplify();
 	return temp;
 }
 
@@ -30,7 +32,6 @@ Rational operator-(const Rational& a, const Rational& b) {
 	//Using (a/b + c/d = (b * c) - (a * d) / (b * d)) 
 	Rational temp((a.numerator * b.denominator - b.numerator * a.denominator),
 		(b.denominator * a.denominator));
-	temp.simplify();
 	return temp;
 }
 
@@ -38,7 +39,6 @@ Rational operator*(const Rational& a, const Rational& b) {
 	//Using (a/b * c/d = (a*c) / (b * d)) 
 	Rational temp(((b.numerator * a.numerator)),
 		(b.denominator * a.denominator));
-	temp.simplify();
 	return temp;
 }
 
@@ -46,53 +46,30 @@ Rational operator/(const Rational& a, const Rational& b) {
 	//Using (a/b / c/d = (a*d) / (b*c))
 	Rational temp(((b.numerator * a.denominator)),
 		(b.denominator * a.numerator));
-	temp.simplify();
 	return temp;
 }
 
 bool operator==(const Rational& a, const Rational& b) {
-	Rational simplified_A = a;
-	Rational simplified_B = b;
-	simplified_A.simplify();
-	simplified_B.simplify();
-	return (simplified_A.numerator == simplified_B.numerator) 
-		&& (simplified_A.denominator == simplified_B.denominator);
+ 	return (a.numerator == b.numerator) 
+		&& (a.denominator == b.denominator);
 }
 
 bool operator>(const Rational& a, const Rational& b) {
-	Rational simplified_A = a;
-	Rational simplified_B = b;
-	simplified_A.simplify();
-	simplified_B.simplify();
-	return (simplified_A.numerator > simplified_B.numerator) 
-		&& (simplified_A.denominator <= simplified_B.denominator);
+	return (a.numerator * b.denominator > b.numerator * a.denominator);
 }
 
 bool operator<(const Rational& a, const Rational& b) {
-	Rational simplified_A = a;
-	Rational simplified_B = b;
-	simplified_A.simplify();
-	simplified_B.simplify();
-	return (simplified_A.numerator < simplified_B.numerator)
-		&& (simplified_A.denominator >= simplified_B.denominator);
+	return (a.numerator * b.denominator < b.numerator * a.denominator);
 }
 
 bool operator>=(const Rational& a, const Rational& b) {
-	Rational simplified_A = a;
-	Rational simplified_B = b;
-	simplified_A.simplify();
-	simplified_B.simplify();
-	return simplified_A == simplified_B
-		|| simplified_A > simplified_B;
+	return a == b
+		|| a > b;
 }
 
 bool operator<=(const Rational& a, const Rational& b) {
-	Rational simplified_A = a;
-	Rational simplified_B = b;
-	simplified_A.simplify();
-	simplified_B.simplify();
-	return simplified_A == simplified_B
-		|| simplified_A < simplified_B;
+	return a == b
+		|| a < b;
 }
 
 int main()

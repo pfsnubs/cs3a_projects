@@ -1,3 +1,4 @@
+// Rational class cpp file
 #include "Rational.h"
 using namespace std;
 
@@ -5,16 +6,19 @@ using namespace std;
 Rational::Rational() {
     numerator = 0;
     denominator = 1;
+    simplify();
 };
 
 Rational::Rational(int num) {
     numerator = num;
     denominator = 1;
+    simplify();
 };
 
 Rational::Rational(int num, int den) {
     numerator = num;
     denominator = den;
+    simplify();
 };
 
 // Rational fxns

@@ -1,3 +1,4 @@
+// Rational class header file
 #include<iostream>
 #include<cstdlib>
 using namespace std;
