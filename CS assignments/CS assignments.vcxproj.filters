@@ -35,17 +35,19 @@
     <Text Include="lab10_1\B.txt" />
     <Text Include="A.txt" />
     <Text Include="B.txt" />
+    <Text Include="lab12\A.txt" />
+    <Text Include="lab12\B.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="lab11\lab11_chen.cpp">
+    <ClCompile Include="lab12\Polynomial.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="lab11\Rational.cpp">
+    <ClCompile Include="lab12\lab12_chen.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="lab11\Rational.h">
+    <ClInclude Include="lab12\Polynomial.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

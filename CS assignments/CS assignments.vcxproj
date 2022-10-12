@@ -134,6 +134,8 @@
     <Text Include="java.txt" />
     <Text Include="lab10_1\A.txt" />
     <Text Include="lab10_1\B.txt" />
+    <Text Include="lab12\A.txt" />
+    <Text Include="lab12\B.txt" />
     <Text Include="python.txt" />
     <Text Include="student.txt" />
     <Text Include="labs\student1.txt" />
@@ -143,11 +145,11 @@
     <Text Include="programming_hw1\python.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="lab11\lab11_chen.cpp" />
-    <ClCompile Include="lab11\Rational.cpp" />
+    <ClCompile Include="lab12\lab12_chen.cpp" />
+    <ClCompile Include="lab12\Polynomial.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="lab11\Rational.h" />
+    <ClInclude Include="lab12\Polynomial.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

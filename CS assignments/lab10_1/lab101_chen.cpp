@@ -9,8 +9,7 @@
 #include <sstream>
 #include "Polynomial.h"
 using namespace std;
-// prototypes
-Polynomial polySetup();
+
 // functions
 Polynomial polySetup(string fileName) {
     ifstream infile;
@@ -40,6 +39,7 @@ Polynomial polySetup(string fileName) {
     Polynomial poly = Polynomial(coeffList, totalDegree);
     return poly;
 }
+
 Polynomial add(Polynomial x, Polynomial y) {
     int xDeg = x.degree;
     int yDeg = y.degree;
@@ -102,6 +102,7 @@ Polynomial subtract(Polynomial x, Polynomial y) {
     }
     return Polynomial(newCoeffs, highest);
 };
+
 Polynomial multiply(Polynomial x, Polynomial y) {
     int xDeg = x.degree;
     int yDeg = y.degree;
@@ -131,6 +132,7 @@ Polynomial multiply(Polynomial x, Polynomial y) {
     }
     return Polynomial(newCoeffs, maxDegree);
 };
+
 int main()
 {
     Polynomial poly_A = polySetup("A.txt");

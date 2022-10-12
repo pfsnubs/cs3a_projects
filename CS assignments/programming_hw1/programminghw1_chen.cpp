@@ -56,9 +56,75 @@ void showAllCourses(int totalCourses, Course* courseList){
 }
 
 // prototype fxn
-void studentAllCourses(int totalCourses, Course* courseList);
-void studentAllCourses(int totalCourses, Course* courseList) {
-    
+void student_AllCourses(int totalCourses, Course* courseList);
+void student_AllCourses(int totalCourses, Course* courseList) {
+    // go through all courses and count occurrence of a certain student
+    // we know every student has a unique name so we don't need to worry
+    // about dupes, just make a loop through each course list
+
+    for (int i = 0; i < totalCourses; i++) {
+        Course courseSelected = courseList[i];
+        for (int j = 0; j < courseSelected.getTotalStudents(); j++) {
+            student studentSelected = courseSelected.studentList[j];
+            string studentName = studentSelected.getName();
+            int coursesEntered = 0;
+
+            // loop through other courses to find existence
+            for (int i = 0; i < totalCourses; i++) {
+                // make sure course searched is not the one we are in
+                Course courseSelected = courseList[i];
+                if (courseSelected.checkStudentExists(studentName)) {
+                    coursesEntered++;
+                }
+            }
+
+            if (coursesEntered == MAX_COURSES) {
+                // print out student data
+                cout << setw(10) << studentSelected.getId() <<
+                    setw(20) << studentSelected.getName() <<
+                    setw(5) << studentSelected.getScore() << endl;
+            }
+        }
+
+    }
+}
+
+void student_TwoCourses(int totalCourses, Course* courseList);
+void student_TwoCourses(int totalCourses, Course* courseList) {
+    // go through all courses and count occurrence of a certain student
+    // we know every student has a unique name so we don't need to worry
+    // about dupes, just make a loop through each course list
+
+    int maxCount = 2;
+    for (int i = 0; i < totalCourses; i++) {
+        Course courseSelected = courseList[i];
+        for (int j = 0; j < courseSelected.getTotalStudents(); j++) {
+            student studentSelected = courseSelected.studentList[j];
+            string studentName = studentSelected.getName();
+            int coursesEntered = 0;
+
+            // loop through other courses to find existence
+            for (int i = 0; i < totalCourses; i++) {
+                // make sure course searched is not the one we are in
+                Course courseSelected = courseList[i];
+                if (courseSelected.checkStudentExists(studentName)) {
+                    coursesEntered++;
+                }
+            }
+
+            if (coursesEntered == maxCount) {
+                cout << "student max " << studentName << endl;
+            }
+
+
+        }
+
+    }
+}
+
+
+void student_TopThree(int totalCourses, Course* courseList);
+void student_TopThree(int totalCourses, Course* courseList) {
     // go through all courses and count occurrence of a certain student
     // we know every student has a unique name so we don't need to worry
     // about dupes, just make a loop through each course list
@@ -123,11 +189,13 @@ int main()
         showAllCourses(totalCourses, courseList);
         break;
     case 2:
-        studentAllCourses(totalCourses, courseList);
+        student_AllCourses(totalCourses, courseList);
         break;
     case 3:
+        student_TwoCourses(totalCourses, courseList);
         break;
     case 4:
+        student_TopThree(totalCourses, courseList);
         break;
     }
 
