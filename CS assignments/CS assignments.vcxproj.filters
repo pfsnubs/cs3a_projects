@@ -39,10 +39,10 @@
     <Text Include="lab12\B.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="lab12\Polynomial.cpp">
+    <ClCompile Include="lab12\lab12_chen.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="lab12\lab12_chen.cpp">
+    <ClCompile Include="lab12\Polynomial.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

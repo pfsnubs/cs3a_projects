@@ -61,32 +61,61 @@ void student_AllCourses(int totalCourses, Course* courseList) {
     // go through all courses and count occurrence of a certain student
     // we know every student has a unique name so we don't need to worry
     // about dupes, just make a loop through each course list
+   // we can run through just one course b/c they are guaranteed to be in all
 
-    for (int i = 0; i < totalCourses; i++) {
-        Course courseSelected = courseList[i];
-        for (int j = 0; j < courseSelected.getTotalStudents(); j++) {
-            student studentSelected = courseSelected.studentList[j];
-            string studentName = studentSelected.getName();
-            int coursesEntered = 0;
+    // grab number of all-course students
+    int totalStudents = 0;
+    Course courseSelected = courseList[0];
+    for (int j = 0; j < courseSelected.getTotalStudents(); j++) {
+        student studentSelected = courseSelected.studentList[j];
+        string studentName = studentSelected.getName();
+        int coursesEntered = 0;
 
-            // loop through other courses to find existence
-            for (int i = 0; i < totalCourses; i++) {
-                // make sure course searched is not the one we are in
-                Course courseSelected = courseList[i];
-                if (courseSelected.checkStudentExists(studentName)) {
-                    coursesEntered++;
-                }
+        // loop through other courses to find existence
+        for (int i = 0; i < totalCourses; i++) {
+            // make sure course searched is not the one we are in
+            Course courseSelected = courseList[i];
+            if (courseSelected.checkStudentExists(studentName)) {
+                coursesEntered++;
             }
+        }
+        if (coursesEntered == MAX_COURSES) {
+            totalStudents++;
+        }
+    }
 
-            if (coursesEntered == MAX_COURSES) {
-                // print out student data
-                cout << setw(10) << studentSelected.getId() <<
-                    setw(20) << studentSelected.getName() <<
-                    setw(5) << studentSelected.getScore() << endl;
+    cout << "There are " << totalStudents << " who take all 3 courses" << endl;
+    cout << LINE_HEADER << endl;
+
+    // run again through to get student info
+    for (int j = 0; j < courseSelected.getTotalStudents(); j++) {
+        student studentSelected = courseSelected.studentList[j];
+        string studentName = studentSelected.getName();
+        int coursesEntered = 0;
+
+        // loop through other courses to find existence
+        int scoreCpp = 0;
+        int scoreJava = 0;
+        int scorePy = 0;
+        for (int i = 0; i < totalCourses; i++) {
+            // make sure course searched is not the one we are in
+            Course courseSelected = courseList[i];
+            if (courseSelected.checkStudentExists(studentName)) {
+                coursesEntered++;
+                if (courseSelected.getCourseName() == "C++") {
+                    scoreCpp = 
+                }
             }
         }
 
+        if (coursesEntered == MAX_COURSES) {
+            cout << setw(10) << studentSelected.getId() <<
+                setw(20) << studentSelected.getName() <<
+                setw(5) << studentSelected.getScore() << endl;
+        }
     }
+    
+    
 }
 
 void student_TwoCourses(int totalCourses, Course* courseList);

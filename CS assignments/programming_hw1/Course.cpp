@@ -90,3 +90,14 @@ bool Course::checkStudentExists(string name) {
     }
     return exists;
 }
+
+student Course::getStudent(string name) {
+    student s_found;
+    for (int i = 0; i < totalStudents; i++) {
+        if (studentList[i].getName() == name) {
+            s_found = studentList[i];
+            break;
+        }
+    }
+    return s_found;
+}
