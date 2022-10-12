@@ -32,11 +32,11 @@ Polynomial operator+ (Polynomial x, Polynomial y) {
     for (int i = 0; i < highest; i++) {
         // assume values are zero if exceeds degree term
         int intX = 0;
-        if (i <= xDeg) {
+        if (i < xDeg) {
             intX = xCoeffs[i];
         }
         int intY = 0;
-        if (i <= yDeg) {
+        if (i < yDeg) {
             intY = yCoeffs[i];
         };
         newCoeffs[i] = intX + intY;
@@ -63,11 +63,11 @@ Polynomial operator- (Polynomial x, Polynomial y) {
     for (int i = 0; i < highest; i++) {
         // assume values are zero if exceeds degree term
         int intX = 0;
-        if (i <= xDeg) {
+        if (i < xDeg) {
             intX = xCoeffs[i];
         }
         int intY = 0;
-        if (i <= yDeg) {
+        if (i < yDeg) {
             intY = yCoeffs[i];
         };
         newCoeffs[i] = intX - intY;
@@ -102,7 +102,7 @@ int main()
     polyA_Coeff[4] = 4;
     polyA_Coeff[5] = 7;
 
-    int polyB_Deg = 5;
+    int polyB_Deg = 7;
     int* polyB_Coeff = new int[polyB_Deg + 1];
     polyB_Coeff[0] = 2;
     polyB_Coeff[1] = 1;
@@ -110,9 +110,11 @@ int main()
     polyB_Coeff[3] = 5;
     polyB_Coeff[4] = 8;
     polyB_Coeff[5] = 3;
+    polyB_Coeff[6] = 1;
+    polyB_Coeff[7] = 2;
 
     Polynomial poly_A = Polynomial(polyA_Coeff, polyA_Deg + 1);
-    Polynomial poly_B = Polynomial(polyB_Coeff, polyA_Deg + 1);
+    Polynomial poly_B = Polynomial(polyB_Coeff, polyB_Deg + 1);
 
     cout << "< Polynomial A >" << endl;
     cout << poly_A;
