@@ -1,6 +1,6 @@
 // 10380722, Anthony, Chen
-// Date: 10/9/2022
-// Lab10, Problem1
+// Date: 10/16/2022
+// Lab12, Problem1
 #include<iostream>
 #include<cstdlib>
 #include <iomanip>
