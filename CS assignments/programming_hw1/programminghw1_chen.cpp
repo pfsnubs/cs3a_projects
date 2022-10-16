@@ -22,8 +22,8 @@ If there are only first and second place scores, you only need to print them out
 #include <fstream>
 #include <iomanip>
 
-#include "student.h";
-#include "Course.h";
+#include "student.h"
+#include "Course.h"
 
 using namespace std;
 
@@ -32,11 +32,34 @@ const string LINE_HEADER = "----------------------------------------------------
 const string EQUAL_HEADER = "====================================================";
 const string HALF_EQUAL_HEADER = "=========================";
 const int MAX_COURSES = 3;
+const int MAX_PLACEMENTS = 3;
 
 // prototype fxns
-void showAllCourses(int totalCourses, Course* courseList);
+int countStudentExistence(Course* courseList, string studentName);
+void showAllCourses(int totalCourses, Course* courseList);                      // menu1
+void student_AllCourses(int totalCourses, Course* courseList, int maxStudents); // menu2
+
+void sameCourseList(Course* courseList, Course course, Course courseCompare, student*& sameRoster, int& rosterSize, int maxEntry); 
+void twoCourse_ScorePrint(int courseTotal, Course course1, Course course2, student* rosterList);
+void student_TwoCourses(int totalCourses, Course* courseList, int maxStudents); // menu3
+
+void swapEntries(int* arr, int entry1, int entry2);
+void sortHiToLow(int*& scoreArr, int scoreSize);
+void student_TopThree(int totalCourses, Course* courseList); // menu4
 
 // functions
+int countStudentExistence(Course* courseList, string studentName) {
+    int coursesEntered = 0;
+    for (int i = 0; i < MAX_COURSES; i++) {
+        Course courseSelected = courseList[i];
+        if (courseSelected.checkStudentExists(studentName)) {
+            coursesEntered++;
+        }
+    }
+    return coursesEntered;
+}
+
+// menu1
 void showAllCourses(int totalCourses, Course* courseList){
   // go through all course list and print student info
   for (int i = 0; i < totalCourses; i++) {
@@ -55,131 +78,180 @@ void showAllCourses(int totalCourses, Course* courseList){
   }
 }
 
-// prototype fxn
-void student_AllCourses(int totalCourses, Course* courseList);
-void student_AllCourses(int totalCourses, Course* courseList) {
+// menu2
+void student_AllCourses(int totalCourses, Course* courseList, int maxStudents) {
     // go through all courses and count occurrence of a certain student
     // we know every student has a unique name so we don't need to worry
     // about dupes, just make a loop through each course list
-   // we can run through just one course b/c they are guaranteed to be in all
+    // we can run through just one course b/c they are guaranteed to be in all
 
-    // grab number of all-course students
-    int totalStudents = 0;
+    // grab all-course students
     Course courseSelected = courseList[0];
-    for (int j = 0; j < courseSelected.getTotalStudents(); j++) {
-        student studentSelected = courseSelected.studentList[j];
+    student* allCourseStudents = new student[maxStudents];
+    int ac_Index = 0;
+    for (int i = 0; i < courseSelected.getTotalStudents(); i++) {
+        student studentSelected = courseSelected.studentList[i];
         string studentName = studentSelected.getName();
-        int coursesEntered = 0;
+        int coursesEntered = countStudentExistence(courseList, studentName);
 
-        // loop through other courses to find existence
-        for (int i = 0; i < totalCourses; i++) {
-            // make sure course searched is not the one we are in
-            Course courseSelected = courseList[i];
-            if (courseSelected.checkStudentExists(studentName)) {
-                coursesEntered++;
-            }
-        }
+        // add student to array of students in all courses
         if (coursesEntered == MAX_COURSES) {
-            totalStudents++;
+            allCourseStudents[ac_Index] = studentSelected;
+            ac_Index++;
         }
     }
 
-    cout << "There are " << totalStudents << " who take all 3 courses" << endl;
+    cout << "There are " << ac_Index << " students who take all 3 courses" << endl;
     cout << LINE_HEADER << endl;
 
-    // run again through to get student info
-    for (int j = 0; j < courseSelected.getTotalStudents(); j++) {
-        student studentSelected = courseSelected.studentList[j];
+    // run again through to print the student info
+    for (int i = 0; i < ac_Index; i++) {
+        student studentSelected = allCourseStudents[i];
         string studentName = studentSelected.getName();
-        int coursesEntered = 0;
+        int studentID = studentSelected.getId();
 
-        // loop through other courses to find existence
-        int scoreCpp = 0;
-        int scoreJava = 0;
-        int scorePy = 0;
+        // set up name and ID and add courses after
+        cout << setw(10) << studentID
+            << setw(20) << studentName;
+
+        // collect student scores from all courses 
+        // and add to print sentence
         for (int i = 0; i < totalCourses; i++) {
-            // make sure course searched is not the one we are in
             Course courseSelected = courseList[i];
-            if (courseSelected.checkStudentExists(studentName)) {
-                coursesEntered++;
-                if (courseSelected.getCourseName() == "C++") {
-                    scoreCpp = 
-                }
-            }
+            student foundStudent = courseSelected.getStudent(studentName);
+            cout << setw(5) << courseSelected.getCourseName()  
+                << " (" << foundStudent.getScore() << ") ";
         }
-
-        if (coursesEntered == MAX_COURSES) {
-            cout << setw(10) << studentSelected.getId() <<
-                setw(20) << studentSelected.getName() <<
-                setw(5) << studentSelected.getScore() << endl;
-        }
-    }
-    
-    
-}
-
-void student_TwoCourses(int totalCourses, Course* courseList);
-void student_TwoCourses(int totalCourses, Course* courseList) {
-    // go through all courses and count occurrence of a certain student
-    // we know every student has a unique name so we don't need to worry
-    // about dupes, just make a loop through each course list
-
-    int maxCount = 2;
-    for (int i = 0; i < totalCourses; i++) {
-        Course courseSelected = courseList[i];
-        for (int j = 0; j < courseSelected.getTotalStudents(); j++) {
-            student studentSelected = courseSelected.studentList[j];
-            string studentName = studentSelected.getName();
-            int coursesEntered = 0;
-
-            // loop through other courses to find existence
-            for (int i = 0; i < totalCourses; i++) {
-                // make sure course searched is not the one we are in
-                Course courseSelected = courseList[i];
-                if (courseSelected.checkStudentExists(studentName)) {
-                    coursesEntered++;
-                }
-            }
-
-            if (coursesEntered == maxCount) {
-                cout << "student max " << studentName << endl;
-            }
-
-
-        }
-
+        cout << endl;
     }
 }
 
+// menu3
+void sameCourseList(Course* courseList, Course course, Course courseCompare, student*& sameRoster, int& rosterSize, int maxEntry) {
+    for (int i = 0; i < course.getTotalStudents(); i++) {
+        student studentSelected = course.studentList[i];
+        string studentName = studentSelected.getName();
+        int coursesEntered = countStudentExistence(courseList, studentName);
 
-void student_TopThree(int totalCourses, Course* courseList);
+        // make sure player has only two courses, sort by proper arrays
+        if (coursesEntered == maxEntry) {
+            if (courseCompare.checkStudentExists(studentName)) {
+                sameRoster[rosterSize] = studentSelected;
+                rosterSize++;
+            }
+        }
+    }
+}
+
+void twoCourse_ScorePrint(int courseTotal, Course course1, Course course2, student* rosterList) {
+    // prints scores of the course array given
+    string strTemplate = "There are " + to_string(courseTotal)
+        + " students who take " + course1.getCourseName()
+        + " and " + course2.getCourseName() + "\n";
+    cout << strTemplate;
+    cout << LINE_HEADER << endl;
+    for (int i = 0; i < courseTotal; i++) {
+        student studentSelected = rosterList[i];
+        string studentName = studentSelected.getName();
+        int studentID = studentSelected.getId();
+        cout << setw(10) << studentID
+            << setw(20) << studentName;
+
+        // get respective student scores from separate classes
+        student course0Student = course1.getStudent(studentName);
+        student course2Student = course2.getStudent(studentName);
+        cout << setw(5) << course1.getCourseName()
+            << " (" << course0Student.getScore() << ") ";
+        cout << setw(5) << course2.getCourseName()
+            << " (" << course2Student.getScore() << ") ";
+        cout << endl;
+    }
+    cout << endl;
+}
+
+void student_TwoCourses(int totalCourses, Course* courseList, int maxStudents) {
+    // get students that are strictly in two courses
+    Course course0 = courseList[0];
+    Course course1 = courseList[1];
+    Course course2 = courseList[2];
+
+    int course0and1_Total = 0;
+    int course0and2_Total = 0;
+    int course1and2_Total = 0;
+    
+    student* course01_Students = new student[maxStudents];
+    student* course02_Students = new student[maxStudents];
+    student* course12_Students = new student[maxStudents];
+
+    // go through students of course1 (dealing with course1-2)
+    int numberToCheck = 2;
+    sameCourseList(courseList, course0, course1, course01_Students, course0and1_Total, numberToCheck);
+    sameCourseList(courseList, course0, course2, course02_Students, course0and2_Total, numberToCheck);
+    sameCourseList(courseList, course1, course2, course12_Students, course1and2_Total, numberToCheck);
+
+    // print scores from function
+    twoCourse_ScorePrint(course0and1_Total, course0, course1, course01_Students);
+    twoCourse_ScorePrint(course0and2_Total, course0, course2, course02_Students);
+    twoCourse_ScorePrint(course1and2_Total, course1, course2, course12_Students);   
+}
+
+// menu4
+
+void swapEntries(int* arr, int entry1, int entry2) {
+    int temp = arr[entry1];
+    arr[entry1] = arr[entry2];
+    arr[entry2] = temp;
+}
+
+void sortHiToLow(int*& scoreArr, int scoreSize) {
+    for (int i = 0; i < scoreSize; i++) {
+        if (scoreArr[i] < scoreArr[i + 1]) {
+            swapEntries(scoreArr, i, i + 1);
+            i = -1; // reset to the far back
+        }
+    }
+}
+
 void student_TopThree(int totalCourses, Course* courseList) {
-    // go through all courses and count occurrence of a certain student
-    // we know every student has a unique name so we don't need to worry
-    // about dupes, just make a loop through each course list
+    // sort top three students of each class by using an index array 
+    // that points to the scores for the respective student
     for (int i = 0; i < totalCourses; i++) {
         Course courseSelected = courseList[i];
-        for (int j = 0; j < courseSelected.getTotalStudents(); j++) {
-            student studentSelected = courseSelected.studentList[j];
-            string studentName = studentSelected.getName();
-            int coursesEntered = 0;
-
-            // loop through other courses to find existence
-            for (int i = 0; i < totalCourses; i++) {
-                // make sure course searched is not the one we are in
-                Course courseSelected = courseList[i];
-                if (courseSelected.checkStudentExists(studentName)) {
-                    coursesEntered++;
-                }
-            }
-
-            if (coursesEntered == MAX_COURSES) {
-                cout << "student max " << studentName << endl;
-            }
-
-
+        student* studentList = courseSelected.studentList;
+        int totalStudents = courseSelected.getTotalStudents();
+        int* scoreList = new int[totalStudents];
+        
+        // gather student scores and pour into scoreList
+        for (int i = 0; i < totalStudents; i++) {
+            scoreList[i] = courseSelected.studentList[i].getScore();
         }
 
+        // use sorting function to sort scores by top to bottom
+        sortHiToLow(scoreList, totalStudents);
+
+        // run through the score for each student score
+        cout << " [ " << courseSelected.getCourseName()
+            << " Top Three Scores ] " << endl;
+        int scorePlacement = 1;
+        for (int i = 0; i < totalStudents; i++) {
+            // show score marking with placement, make sure only show top three
+            if (scoreList[i] != scoreList[i + 1] && scorePlacement <= MAX_PLACEMENTS) {
+                cout << scorePlacement << ". " << scoreList[i] << endl;
+                scorePlacement++;
+
+                // print out score of students underneath placements
+                for (int j = 0; j < totalStudents; j++) {
+                    string studentName = studentList[j].getName();
+                    int studentID = studentList[j].getId();
+                    int studentScore = studentList[j].getScore();
+
+                    // print id and name entry of score shared in placement
+                    if (scoreList[i] == studentList[j].getScore()) {
+                        cout << setw(3) << " " << studentID << setw(10) << studentName << endl;
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -202,26 +274,40 @@ int main()
         cout << endl;
     }
 
+    // get maximum total number of students from all courses
+    // used for array purposes
+    int maxStudents = 0;
+    for (int i = 0; i < totalCourses; i++) {
+        int studentTotal = courseList[i].getTotalStudents();
+        if (maxStudents < studentTotal) {
+            maxStudents = studentTotal;
+        }
+    }
+    
+    // display menu
     cout << HALF_EQUAL_HEADER << " Menu " << HALF_EQUAL_HEADER << endl;
     cout << "1. Show all course lists" << endl;
     cout << "2. List of students who take all courses" << endl;
     cout << "3. List of students who take two courses" << endl;
     cout << "4. Print out top three scores for each course" << endl;
 
+    // display input
     int input;
     cout << "---> select : ";
     cin >> input;
     cout << endl;
+
+
 
     switch (input) {
     case 1:
         showAllCourses(totalCourses, courseList);
         break;
     case 2:
-        student_AllCourses(totalCourses, courseList);
+        student_AllCourses(totalCourses, courseList, maxStudents);
         break;
     case 3:
-        student_TwoCourses(totalCourses, courseList);
+        student_TwoCourses(totalCourses, courseList, maxStudents);
         break;
     case 4:
         student_TopThree(totalCourses, courseList);
