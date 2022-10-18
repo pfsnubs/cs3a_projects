@@ -1,6 +1,6 @@
 // 10380722, Anthony, Chen
 // Date: 10/23/2022
-// Homework1, Problem1
+// Homework Project 1
 
 /*
 1.You should use struct Course and class Student
@@ -31,21 +31,23 @@ using namespace std;
 const string LINE_HEADER = "----------------------------------------------------";
 const string EQUAL_HEADER = "====================================================";
 const string HALF_EQUAL_HEADER = "=========================";
-const int MAX_COURSES = 3;
-const int MAX_PLACEMENTS = 3;
+const int MAX_COURSES = 3;      // max courses to input for menu
+const int MAX_PLACEMENTS = 3;   // show top X students of a course list
 
 // prototype fxns
 int countStudentExistence(Course* courseList, string studentName);
 void showAllCourses(int totalCourses, Course* courseList);                      // menu1
 void student_AllCourses(int totalCourses, Course* courseList, int maxStudents); // menu2
 
-void sameCourseList(Course* courseList, Course course, Course courseCompare, student*& sameRoster, int& rosterSize, int maxEntry); 
-void twoCourse_ScorePrint(int courseTotal, Course course1, Course course2, student* rosterList);
+void sameCourseList(Course* courseList, Course course, Course courseCompare, 
+    student*& sameRoster, int& rosterSize, int maxEntry); 
+void twoCourse_ScorePrint(int courseTotal, Course course1, Course course2, 
+    student* rosterList);
 void student_TwoCourses(int totalCourses, Course* courseList, int maxStudents); // menu3
 
 void swapEntries(int* arr, int entry1, int entry2);
 void sortHiToLow(int*& scoreArr, int scoreSize);
-void student_TopThree(int totalCourses, Course* courseList); // menu4
+void student_TopThree(int totalCourses, Course* courseList);                    // menu4
 
 // functions
 int countStudentExistence(Course* courseList, string studentName) {
@@ -111,8 +113,8 @@ void student_AllCourses(int totalCourses, Course* courseList, int maxStudents) {
         int studentID = studentSelected.getId();
 
         // set up name and ID and add courses after
-        cout << setw(10) << studentID
-            << setw(20) << studentName;
+        cout << setw(5) << studentID
+            << setw(10) << studentName;
 
         // collect student scores from all courses 
         // and add to print sentence
@@ -127,7 +129,11 @@ void student_AllCourses(int totalCourses, Course* courseList, int maxStudents) {
 }
 
 // menu3
-void sameCourseList(Course* courseList, Course course, Course courseCompare, student*& sameRoster, int& rosterSize, int maxEntry) {
+void sameCourseList(Course* courseList, Course course, Course courseCompare, 
+    student*& sameRoster, int& rosterSize, int maxEntry) {
+    // function used to detect and gather student of same courses
+    // also adds student to roster list and increases roster size
+
     for (int i = 0; i < course.getTotalStudents(); i++) {
         student studentSelected = course.studentList[i];
         string studentName = studentSelected.getName();
@@ -144,7 +150,7 @@ void sameCourseList(Course* courseList, Course course, Course courseCompare, stu
 }
 
 void twoCourse_ScorePrint(int courseTotal, Course course1, Course course2, student* rosterList) {
-    // prints scores of the course array given
+    // prints scores of the course array given for menu3
     string strTemplate = "There are " + to_string(courseTotal)
         + " students who take " + course1.getCourseName()
         + " and " + course2.getCourseName() + "\n";
@@ -155,14 +161,14 @@ void twoCourse_ScorePrint(int courseTotal, Course course1, Course course2, stude
         string studentName = studentSelected.getName();
         int studentID = studentSelected.getId();
         cout << setw(10) << studentID
-            << setw(20) << studentName;
+            << setw(10) << studentName;
 
         // get respective student scores from separate classes
         student course0Student = course1.getStudent(studentName);
         student course2Student = course2.getStudent(studentName);
-        cout << setw(5) << course1.getCourseName()
+        cout << setw(10) << course1.getCourseName()
             << " (" << course0Student.getScore() << ") ";
-        cout << setw(5) << course2.getCourseName()
+        cout << setw(10) << course2.getCourseName()
             << " (" << course2Student.getScore() << ") ";
         cout << endl;
     }
@@ -175,10 +181,12 @@ void student_TwoCourses(int totalCourses, Course* courseList, int maxStudents) {
     Course course1 = courseList[1];
     Course course2 = courseList[2];
 
+    // set up ints to say # of students in two classes
     int course0and1_Total = 0;
     int course0and2_Total = 0;
     int course1and2_Total = 0;
     
+    // create array of students to get student infos of two classes
     student* course01_Students = new student[maxStudents];
     student* course02_Students = new student[maxStudents];
     student* course12_Students = new student[maxStudents];
@@ -198,12 +206,14 @@ void student_TwoCourses(int totalCourses, Course* courseList, int maxStudents) {
 // menu4
 
 void swapEntries(int* arr, int entry1, int entry2) {
+    // swaps entries of an int array
     int temp = arr[entry1];
     arr[entry1] = arr[entry2];
     arr[entry2] = temp;
 }
 
 void sortHiToLow(int*& scoreArr, int scoreSize) {
+    // sorts integers by highest to lowest in scoreArr
     for (int i = 0; i < scoreSize; i++) {
         if (scoreArr[i] < scoreArr[i + 1]) {
             swapEntries(scoreArr, i, i + 1);
@@ -260,7 +270,6 @@ int main()
     int totalCourses;
     cout << "Enter number of courses : ";
     cin >> totalCourses;
-    cout << endl;
 
     // set up filename prompt and make an array for courses
     Course* courseList = new Course[totalCourses];
@@ -271,8 +280,9 @@ int main()
         cout << "Enter filename " << i + 1 << " : ";
         cin >> fileName;
         courseList[i] = Course(fileName);
-        cout << endl;
     }
+    cout << endl;
+    cout << endl;
 
     // get maximum total number of students from all courses
     // used for array purposes
@@ -297,8 +307,7 @@ int main()
     cin >> input;
     cout << endl;
 
-
-
+    // handle menu thru function input
     switch (input) {
     case 1:
         showAllCourses(totalCourses, courseList);
@@ -313,9 +322,5 @@ int main()
         student_TopThree(totalCourses, courseList);
         break;
     }
-
-    
-    
-
     return 0;
 }

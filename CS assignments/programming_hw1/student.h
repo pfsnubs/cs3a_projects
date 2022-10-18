@@ -8,9 +8,10 @@ using namespace std;
 
 class student {
 private:
-    int id;
-    string name;
-    int score;
+    int id;         // ID number of student
+    string name;    // name of student
+    int score;      // score of student
+
 public:
     student();
     student(int newId, string newName, int newScore);

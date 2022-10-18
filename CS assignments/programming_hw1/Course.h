@@ -9,9 +9,11 @@ using namespace std;
 
 // structs
 struct Course {
-    string courseName;
-    int totalStudents;
-    student* studentList;
+    string courseName;    // string name of course
+    int totalStudents;    // int size of studentList
+    student* studentList; // array of students
+
+    // struct fxns
     Course();
     Course(string fileName);
     void setTotalStudents(int newTotal);

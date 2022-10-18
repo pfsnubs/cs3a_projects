@@ -10,6 +10,7 @@ Course::Course() {
 
 // Course constructor
 Course::Course(string fileName) {
+    // creates a Course struct from a file directory
     ifstream infile;
     infile.open(fileName);
 
