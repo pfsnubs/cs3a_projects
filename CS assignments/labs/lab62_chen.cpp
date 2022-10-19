@@ -95,7 +95,7 @@ void printMaxList(IntPtr id, string* name, IntPtr score, int count, int max) {
 
 
 // four function declarations
-int mains()
+int main()
 {
     int* id = nullptr;       // id array
     string* name = nullptr;  // name array

@@ -39,10 +39,10 @@
     <Text Include="lab12\B.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="programming_hw1\programminghw1_chen.cpp">
+    <ClCompile Include="programming_hw1\student.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="programming_hw1\student.cpp">
+    <ClCompile Include="programming_hw1\programminghw1_chen.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="programming_hw1\Course.cpp">

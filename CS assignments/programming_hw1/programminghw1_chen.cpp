@@ -2,21 +2,6 @@
 // Date: 10/23/2022
 // Homework Project 1
 
-/*
-1.You should use struct Course and class Student
-2.You should create a structure dynamically(I will test your
-code with different input files).
-3.You should create a structure using a function.
-4.Each menu should be implemented as a function.
-5.Make your main code as neat and readable as possible.
-6.Use reference and pointers appropriately.
-7.Documentation is needed (see the rubric).
-
-For menu4, if all students have the same score, they should all be printed as the top score students. There are no second or third place scores.
-
-If there are only first and second place scores, you only need to print them out. There is no third place score.
-*/
-
 #include <string>
 #include <iostream>
 #include <fstream>
@@ -28,9 +13,11 @@ If there are only first and second place scores, you only need to print them out
 using namespace std;
 
 // constants
+// header strings used for menu prints
 const string LINE_HEADER = "----------------------------------------------------";
 const string EQUAL_HEADER = "====================================================";
-const string HALF_EQUAL_HEADER = "=========================";
+const string HALF_EQUAL_HEADER = "=========================";   
+
 const int MAX_COURSES = 3;      // max courses to input for menu
 const int MAX_PLACEMENTS = 3;   // show top X students of a course list
 
@@ -51,6 +38,7 @@ void student_TopThree(int totalCourses, Course* courseList);                    
 
 // functions
 int countStudentExistence(Course* courseList, string studentName) {
+    // general function used to check a student inside multiple classes
     int coursesEntered = 0;
     for (int i = 0; i < MAX_COURSES; i++) {
         Course courseSelected = courseList[i];
@@ -217,7 +205,7 @@ void sortHiToLow(int*& scoreArr, int scoreSize) {
     for (int i = 0; i < scoreSize; i++) {
         if (scoreArr[i] < scoreArr[i + 1]) {
             swapEntries(scoreArr, i, i + 1);
-            i = -1; // reset to the far back
+            i = -1; // reset to the far back to double check again
         }
     }
 }
@@ -262,6 +250,7 @@ void student_TopThree(int totalCourses, Course* courseList) {
                 }
             }
         }
+        cout << endl;
     }
 }
 

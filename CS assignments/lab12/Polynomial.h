@@ -1,5 +1,11 @@
 // Polynomial header file
 #include<iostream>
+#include<iostream>
+#include<cstdlib>
+#include <iomanip>
+#include <fstream>
+#include <string>
+#include <sstream>
 using namespace std;
 
 class Polynomial

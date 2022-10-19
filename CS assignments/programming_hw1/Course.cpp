@@ -82,6 +82,8 @@ string Course::getCourseName() {
 };
 
 bool Course::checkStudentExists(string name) {
+    // search through stuentList 
+    // to check if name/student exists in this course
     bool exists = false;
     for (int i = 0; i < totalStudents; i++) {
         if (studentList[i].getName() == name) {
@@ -93,6 +95,7 @@ bool Course::checkStudentExists(string name) {
 }
 
 student Course::getStudent(string name) {
+    // grab student object if found in list
     student s_found;
     for (int i = 0; i < totalStudents; i++) {
         if (studentList[i].getName() == name) {
