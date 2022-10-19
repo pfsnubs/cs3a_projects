@@ -13,7 +13,7 @@ struct Course {
     int totalStudents;    // int size of studentList
     student* studentList; // array of students
 
-    // struct fxns
+    // Constructors
     Course();
     Course(string fileName);
 

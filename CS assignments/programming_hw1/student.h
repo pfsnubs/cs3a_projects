@@ -13,6 +13,7 @@ private:
     int score;      // score of student
 
 public:
+    // Constructors
     student();
     student(int newId, string newName, int newScore);
 
