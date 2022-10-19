@@ -64,7 +64,6 @@ Course::Course(string fileName) {
 }
 
 // course fxns
-
 void Course::setTotalStudents(int newTotal) {
     totalStudents = newTotal;
 };

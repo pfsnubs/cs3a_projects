@@ -22,19 +22,113 @@ const int MAX_COURSES = 3;      // max courses to input for menu
 const int MAX_PLACEMENTS = 3;   // show top X students of a course list
 
 // prototype fxns
-int countStudentExistence(Course* courseList, string studentName);
-void showAllCourses(int totalCourses, Course* courseList);                      // menu1
-void student_AllCourses(int totalCourses, Course* courseList, int maxStudents); // menu2
 
+/*
+countStudentExistence()
+    INPUT:
+        Takes in course pointer (array) courseList,
+        and string of the student to search, studentName.
+    OUTPUT:
+        Iterates through each and every course found in
+        courseList, then calls checkStudentExists and increments
+        a number to return back to check number of occurrence
+        for that specific student
+*/
+int countStudentExistence(Course* courseList, string studentName);
+
+/*
+menu1 - showAllCourses()
+    INPUT:
+        Takes in an integer totalCourses and Course pointer CourseList
+    OUTPUT:
+        Iterates through courseList using its size, totalCourses,
+        and prints out the student information.
+*/
+void showAllCourses(int totalCourses, Course* courseList);                      
+
+/*
+menu2 - student_AllCourses()
+    INPUT:
+        Takes in int totalCourses, Course pointer courseList,
+        and int maxStudents
+    OUTPUT:
+        Iterates through one of the courses (as it is guaranteed
+        that all-course students exist in one of them) to find the
+        students with all three courses by finding and putting
+        them into a student array of size maxStudents
+        to gather and prints all students in all courses
+*/
+void student_AllCourses(int totalCourses, Course* courseList, int maxStudents); 
+
+/*
+sameCourseList()
+    INPUT:
+        Takes in Course pointer courseList, a course to look at,
+        another course to compare with, and modifies by reference for
+        student array sameRoster and int rosterSize.
+        Also takes in int maxEntry, used to deem a student to be in
+        the sameRoster array.
+    OUTPUT:
+        Reads through the first course and makes sure that the
+        student strictly exists in a total number of courses maxEntry,
+        and adds student to sameRoster if they enrolled in
+        the same course as courseCompare.
+*/
 void sameCourseList(Course* courseList, Course course, Course courseCompare, 
     student*& sameRoster, int& rosterSize, int maxEntry); 
+
+/*
+twoCourse_ScorePrint()
+    INPUT:
+        Takes in int courseTotal, Course course1 and course2,
+        and the student pointer (array) rosterList
+    OUTPUT:
+        Mainly used to print out the student info of
+        those in strictly two courses from rosterList
+        and prints out the student info for those two courses
+*/
 void twoCourse_ScorePrint(int courseTotal, Course course1, Course course2, 
     student* rosterList);
-void student_TwoCourses(int totalCourses, Course* courseList, int maxStudents); // menu3
 
-void swapEntries(int* arr, int entry1, int entry2);
+/*
+menu3 - student_TwoCourses()
+    INPUT:
+        Takes in int totalCourses, Course pointer courseList,
+        and int maxStudents
+    OUTPUT:
+        Iterates through one of the courses (as it is guaranteed
+        that all-course students exist in one of them) to find the
+        students with all three courses by finding and putting
+        them into a student array of size maxStudents
+        to gather and prints all students in all courses
+*/
+void student_TwoCourses(int totalCourses, Course* courseList, int maxStudents);
+
+/*
+sortHiToLow()
+    INPUT:
+        Takes in int pointer by reference scoreArr,
+        and int scoreSize.
+    OUTPUT:
+        Iterates through scoreArr and directly modifies
+        it according to descending score value, compares
+        and swaps entry values in scoreArr
+*/
 void sortHiToLow(int*& scoreArr, int scoreSize);
-void student_TopThree(int totalCourses, Course* courseList);                    // menu4
+
+/*
+menu4 - student_TopThree()
+    INPUT:
+        Takes in int totalCourses, Course pointer courseList,
+        and int maxStudents
+    OUTPUT:
+        Iterates through one of the courses (as it is guaranteed
+        that all-course students exist in one of them) to find the
+        students with all three courses by finding and putting
+        them into a student array of size maxStudents
+        to gather and prints all students in all courses
+*/
+void student_TopThree(int totalCourses, Course* courseList); 
 
 // functions
 int countStudentExistence(Course* courseList, string studentName) {
@@ -49,7 +143,6 @@ int countStudentExistence(Course* courseList, string studentName) {
     return coursesEntered;
 }
 
-// menu1
 void showAllCourses(int totalCourses, Course* courseList){
   // go through all course list and print student info
   for (int i = 0; i < totalCourses; i++) {
@@ -68,7 +161,6 @@ void showAllCourses(int totalCourses, Course* courseList){
   }
 }
 
-// menu2
 void student_AllCourses(int totalCourses, Course* courseList, int maxStudents) {
     // go through all courses and count occurrence of a certain student
     // we know every student has a unique name so we don't need to worry
@@ -116,7 +208,6 @@ void student_AllCourses(int totalCourses, Course* courseList, int maxStudents) {
     }
 }
 
-// menu3
 void sameCourseList(Course* courseList, Course course, Course courseCompare, 
     student*& sameRoster, int& rosterSize, int maxEntry) {
     // function used to detect and gather student of same courses
@@ -191,20 +282,14 @@ void student_TwoCourses(int totalCourses, Course* courseList, int maxStudents) {
     twoCourse_ScorePrint(course1and2_Total, course1, course2, course12_Students);   
 }
 
-// menu4
-
-void swapEntries(int* arr, int entry1, int entry2) {
-    // swaps entries of an int array
-    int temp = arr[entry1];
-    arr[entry1] = arr[entry2];
-    arr[entry2] = temp;
-}
-
 void sortHiToLow(int*& scoreArr, int scoreSize) {
     // sorts integers by highest to lowest in scoreArr
     for (int i = 0; i < scoreSize; i++) {
         if (scoreArr[i] < scoreArr[i + 1]) {
-            swapEntries(scoreArr, i, i + 1);
+            // swap entries of the current with the next entry
+            int temp = scoreArr[i];
+            scoreArr[i] = scoreArr[i + 1];
+            scoreArr[i + 1] = temp;
             i = -1; // reset to the far back to double check again
         }
     }

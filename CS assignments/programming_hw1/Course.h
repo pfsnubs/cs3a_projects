@@ -16,11 +16,38 @@ struct Course {
     // struct fxns
     Course();
     Course(string fileName);
+
+    // Mutators
     void setTotalStudents(int newTotal);
     void setCourseName(string newName);
+
+    // Accessors
     int getTotalStudents();
     string getCourseName();
+
+    /*
+    Course::checkStudentExists()
+        INPUT:
+            Takes in a string name (a student's name)
+            to search through studentList through.
+        OUTPUT:
+            Iterates through studentList to find
+            a student's name matched with name
+            and returns true if found, false otherwise
+    */
     bool checkStudentExists(string name);
+
+    /*
+    Course::getStudent()
+        INPUT:
+            Takes in a string name, a student's name
+            to find through studentList
+        OUTPUT:
+            Iterates through studentList and checks if
+            the name is found in the array, and
+            returns back the student object of the name found
+            in studentList.
+    */
     student getStudent(string name);
 };
 

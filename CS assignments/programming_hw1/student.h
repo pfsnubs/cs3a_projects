@@ -15,9 +15,13 @@ private:
 public:
     student();
     student(int newId, string newName, int newScore);
+
+    // Mutators
     void setId(int newId);
     void setName(string newName);
     void setScore(int newScore);
+
+    // Accessors
     int getId();
     string getName();
     int getScore();
