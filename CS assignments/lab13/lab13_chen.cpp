@@ -36,7 +36,8 @@ int main()
 		}
 		else if (head->data > body->data) {	
 			cout << head->data << " OVER DATA " << body->data << endl;
-			NodePtr prev = head->link;
+
+			NodePtr prev;
 			for (NodePtr temp = head; (temp->data < body->data); temp = temp->link) {
 				cout << temp->data << "COMPARING FOR VAL" << body->data << endl;
 				prev = temp;
