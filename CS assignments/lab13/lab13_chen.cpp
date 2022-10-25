@@ -49,8 +49,6 @@ int main()
 					prev = temp;					
 				}
 			}
-
-			
 		}
 		else {
 			body->link = head;
