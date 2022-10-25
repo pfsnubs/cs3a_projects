@@ -54,8 +54,9 @@ int main()
 			body->link = head;
 			head = body;
 		}
+
+		print(head);
 	}
 
-	print(head);
 	return 0;
 }
