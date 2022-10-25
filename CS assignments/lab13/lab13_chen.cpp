@@ -55,6 +55,7 @@ int main()
 			head = body;
 		}
 
+		// print after every sort for ladder output
 		print(head);
 	}
 
