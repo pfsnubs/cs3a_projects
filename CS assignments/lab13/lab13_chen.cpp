@@ -34,17 +34,23 @@ int main()
 		if (head == NULL) {
 			head = body;
 		}
-		else if (head->data > body->data) {	
-			cout << head->data << " OVER DATA " << body->data << endl;
+		else if (head->data < body->data) {	
+			NodePtr prev = NULL;
+			for (NodePtr temp = head; (temp != NULL); temp = temp->link) {
+				if (temp->data < body->data) {
+					// swap links
+					body->link = temp->link;
+					temp->link = body;
 
-			NodePtr prev;
-			for (NodePtr temp = head; (temp->data < body->data); temp = temp->link) {
-				cout << temp->data << "COMPARING FOR VAL" << body->data << endl;
-				prev = temp;
+					// re-link up back the prev to the current node
+					if (prev != NULL) {
+						prev->link = temp;
+					}
+					prev = temp;					
+				}
 			}
 
-			body->link = prev->link;
-			prev->link = body;
+			
 		}
 		else {
 			body->link = head;
