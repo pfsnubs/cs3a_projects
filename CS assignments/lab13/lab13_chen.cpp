@@ -20,7 +20,7 @@ void print(NodePtr head)
 	cout << endl;
 }
 
-int main()
+int maind()
 {
 	int A[10] = { 4, 3, 6, 1, 10, 9, 5, 8, 7, 2 };
 

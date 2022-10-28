@@ -2,47 +2,46 @@
 #include <fstream>
 #include <iomanip>
 #include <string>
+#include <stack>
 using namespace std;
 
-class person {
-private:
-    string name;
-    int age;
-public:
-    person(): name(" "), age(0){}
-    person(string n, int a) : name(n), age(a){}
-    friend istream& operator >>(istream& is, person& p);
-    friend ostream& operator <<(ostream& os, const person& p);
-    person& operator++();
-};
+bool palinCheck(string palinString) {
+    bool truePalindrome = false;
+    stack<char> palin;
+    stack<char> palin2;
+    
+    // push chars into char stack
+    for (int i = 0; i < palinString.length(); i++) {
+        palin.push(palinString[i]);
+        if (palin == palin2) {
+            truePalindrome = true;
+        }
+    }
 
-person& person::operator++() {
-    age++;
-    return *this;
+    for (int i = 0; i < palinString.length(); i++) {
+        palin.push(palinString[i]);
+        if (palin == palin2) {
+            truePalindrome = true;
+        }
+    }
+
+    return truePalindrome;
 }
-
-istream& operator>>(istream& is, person& p)
-{
-    is >> p.name >> p.age;
-    return is;
-}
-
-ostream& operator<<(ostream& os, const person& p)
-{
-    cout << "You are " << p.name << " and " << p.age << " years old.";
-    return os;
-}
-
 
 int main()
 {
-    person ps;
+    string palin;
+    cout << "Enter string: ";
     // read data into ps
-    cin >> ps;
-    // print data from ps
-    ++ps;
-    cout << ps;
-
+    cin >> palin;
+    
+    bool palindromed = palinCheck();
+    if (palindromed) {
+        cout << palin << " is a palindrome" << endl;
+    }
+    else {
+        cout << palin << " is not a palindrome" << endl;
+    }
 
     return 0;
 }

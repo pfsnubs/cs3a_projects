@@ -37,9 +37,10 @@
     <Text Include="B.txt" />
     <Text Include="lab12\A.txt" />
     <Text Include="lab12\B.txt" />
+    <Text Include="lab14\student.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="lab13\lab13_chen.cpp">
+    <ClCompile Include="lab14\lab14part2.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
