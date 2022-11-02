@@ -146,7 +146,7 @@
     <Text Include="programming_hw1\python.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="lab14\lab14part2.cpp" />
+    <ClCompile Include="programming_hw1\testproj.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

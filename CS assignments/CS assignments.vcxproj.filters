@@ -40,7 +40,7 @@
     <Text Include="lab14\student.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="lab14\lab14part2.cpp">
+    <ClCompile Include="programming_hw1\testproj.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
