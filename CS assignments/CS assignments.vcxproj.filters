@@ -39,4 +39,9 @@
     <Text Include="lab12\B.txt" />
     <Text Include="lab14\student.txt" />
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="lab17\lab17p3.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
 </Project>

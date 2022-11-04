@@ -1,3 +1,7 @@
+// 10380722, Anthony, Chen
+// Date: 10/23/2022
+// Homework Project 1
+
 #include <iostream>
 #include <fstream>
 #include <iomanip>
