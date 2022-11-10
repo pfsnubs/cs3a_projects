@@ -1,12 +1,9 @@
 // 10380722, Anthony, Chen
-// Date: 10/23/2022
-// Homework Project 1
+// Date: 11/13/2022
+// Lab 18, Problem 1
 
 #include <iostream>
 #include <fstream>
-#include <iomanip>
-#include <string>
-#include <stack>
 using namespace std;
 
 class HospitalEmployee {
@@ -14,12 +11,14 @@ private:
     string name;
     int number;
 public:
+    // constructors
     HospitalEmployee() {};
     HospitalEmployee(string name, int number) {
         this->name = name;
         this->number = number;
     }
 
+    // mutator methods
     void setName(string name) {
         this->name = name;
     }
@@ -27,6 +26,7 @@ public:
         this->number = number;
     }
 
+    // accessor methods
     string getName() {
         return name;
     }
@@ -43,15 +43,18 @@ class Doctor : public HospitalEmployee {
 private:
     string specialty;
 public:
+    // constructors
     Doctor() {};
     Doctor(string name, int number, string specialty) : HospitalEmployee(name, number) {
         this->specialty = specialty;
     }
 
+    // mutator methods
     void setSpecialty(string specialty) {
         this->specialty = specialty;
     }
 
+    // accessor methods
     string getSpecialty() {
         return specialty;
     }
@@ -65,15 +68,18 @@ class Nurse : public HospitalEmployee {
 private:
     int numPatients;
 public:
+    // constructors
     Nurse() {};
-    Nurse(string name, int number, int numPat) : HospitalEmployee(name, number){
+    Nurse(string name, int number, int numPat) : HospitalEmployee(name, number) {
         numPatients = numPat;
     }
 
+    // mutator methods
     void setNumPatients(int numPat) {
         this->numPatients = numPat;
     }
 
+    // accessor methods
     int getNumPatients() {
         return numPatients;
     }

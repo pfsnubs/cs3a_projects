@@ -137,6 +137,8 @@
     <Text Include="lab12\A.txt" />
     <Text Include="lab12\B.txt" />
     <Text Include="lab14\student.txt" />
+    <Text Include="lab18\HS.txt" />
+    <Text Include="lab18\MS.txt" />
     <Text Include="python.txt" />
     <Text Include="student.txt" />
     <Text Include="labs\student1.txt" />
@@ -146,7 +148,7 @@
     <Text Include="programming_hw1\python.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="lab17\lab17p3.cpp" />
+    <ClCompile Include="lab18\lab18p3.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
