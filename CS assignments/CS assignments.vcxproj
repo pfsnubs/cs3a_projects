@@ -139,6 +139,9 @@
     <Text Include="lab14\student.txt" />
     <Text Include="lab18\HS.txt" />
     <Text Include="lab18\MS.txt" />
+    <Text Include="lab19\customer.txt" />
+    <Text Include="programming_hw2\book.txt" />
+    <Text Include="programming_hw2\person.txt" />
     <Text Include="python.txt" />
     <Text Include="student.txt" />
     <Text Include="labs\student1.txt" />
@@ -148,7 +151,10 @@
     <Text Include="programming_hw1\python.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="lab18\lab18p3.cpp" />
+    <ClCompile Include="programming_hw2\programminghw2_chen.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="programming_hw2\Node.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

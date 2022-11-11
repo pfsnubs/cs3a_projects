@@ -40,10 +40,18 @@
     <Text Include="lab14\student.txt" />
     <Text Include="lab18\MS.txt" />
     <Text Include="lab18\HS.txt" />
+    <Text Include="programming_hw2\book.txt" />
+    <Text Include="programming_hw2\person.txt" />
+    <Text Include="lab19\customer.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="lab18\lab18p3.cpp">
+    <ClCompile Include="programming_hw2\programminghw2_chen.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="programming_hw2\Node.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
