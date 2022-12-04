@@ -2,18 +2,19 @@
 #include <string>
 #include <fstream>
 #include <iomanip>
+#pragma once
 using namespace std;
 
 // parent Book class
 class Book {
-private:     
-    int code;       // int, id number of book
-    string title;   // string name of book
-    int available;  // int, # of available copies
-    int rented      // int, # of copies already rented
+private:
+    int code;        // int, id number of book
+    string title;    // string name of book
+    int available;   // int, # of available copies
+    int rented;      // int, # of copies already rented
 public:
     // Constructors
-    Book();
+    Book(){};
     Book(int code, string title, int available, int rented);
 
     // Mutators
@@ -29,16 +30,14 @@ public:
     int getRented();
 };
 
-
-// derived classes
-
 class ChildrenBook : public Book {
 private:
     int age;
 public:
     // Constructors
-    ChildrenBook(int code, string title, int age, int available, int rented) 
-        : Book(int code, string title, int available, int rented){
+    ChildrenBook() {};
+    ChildrenBook(int code, string title, int age, int available, int rented)
+        : Book(code, title, available, rented) {
         this->age = age;
     };
 
@@ -58,8 +57,9 @@ private:
     string publisher;
 public:
     // Constructors
-    ComputerBook(int code, string title, string publisher, int available, int rented) 
-        : Book(int code, string title, int available, int rented) {
+    ComputerBook() {};
+    ComputerBook(int code, string title, string publisher, int available, int rented)
+        : Book(code, title, available, rented) {
         this->publisher = publisher;
     };
 
@@ -69,7 +69,7 @@ public:
     };
 
     // Accessors
-    int getPublisher() {
+    string getPublisher() {
         return publisher;
     };
 };
@@ -79,8 +79,9 @@ private:
     int publish_date;
 public:
     // Constructors
-    Novel(int code, string title, int publish_date, int available, int rented) 
-        :Book(int code, string title, int available, int rented){
+    Novel() {};
+    Novel(int code, string title, int publish_date, int available, int rented)
+        :Book(code, title, available, rented) {
         this->publish_date = publish_date;
     };
 

@@ -140,6 +140,11 @@
     <Text Include="lab18\HS.txt" />
     <Text Include="lab18\MS.txt" />
     <Text Include="lab19\customer.txt" />
+    <Text Include="lab20\data.txt" />
+    <Text Include="lab21\map1.txt" />
+    <Text Include="lab21\map2.txt" />
+    <Text Include="lab21\map3.txt" />
+    <Text Include="lab21\map4.txt" />
     <Text Include="programming_hw2\book.txt" />
     <Text Include="programming_hw2\person.txt" />
     <Text Include="python.txt" />
@@ -151,10 +156,15 @@
     <Text Include="programming_hw1\python.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="programming_hw2\BookFiles\Book.cpp" />
+    <ClCompile Include="programming_hw2\PersonFiles\Person.cpp" />
     <ClCompile Include="programming_hw2\programminghw2_chen.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="programming_hw2\Node.h" />
+    <ClInclude Include="programming_hw2\BookFiles\Book.h" />
+    <ClInclude Include="programming_hw2\BookFiles\BookNode.h" />
+    <ClInclude Include="programming_hw2\PersonFiles\Person.h" />
+    <ClInclude Include="programming_hw2\PersonFiles\PersonNode.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

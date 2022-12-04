@@ -8,12 +8,14 @@ using namespace std;
 using namespace std;
 
 // Book constructors
+/*
 Book::Book() {
     code = 0;
     title = "";
     available = 0;
     rented = 0;
 };
+*/
 
 Book::Book(int code, string title, int available, int rented) {
     this->code = code;
@@ -26,7 +28,7 @@ Book::Book(int code, string title, int available, int rented) {
 
 // mutators
 void Book::setCodeID(int newID) {
-    code = newTotal;
+    code = newID;
 };
 void Book::setBookName(string newName) {
     title = newName;

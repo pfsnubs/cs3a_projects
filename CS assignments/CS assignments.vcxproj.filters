@@ -43,14 +43,34 @@
     <Text Include="programming_hw2\book.txt" />
     <Text Include="programming_hw2\person.txt" />
     <Text Include="lab19\customer.txt" />
+    <Text Include="lab20\data.txt" />
+    <Text Include="lab21\map1.txt" />
+    <Text Include="lab21\map2.txt" />
+    <Text Include="lab21\map3.txt" />
+    <Text Include="lab21\map4.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="programming_hw2\BookFiles\Book.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="programming_hw2\PersonFiles\Person.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="programming_hw2\programminghw2_chen.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="programming_hw2\Node.h">
+    <ClInclude Include="programming_hw2\BookFiles\Book.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="programming_hw2\BookFiles\BookNode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="programming_hw2\PersonFiles\Person.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="programming_hw2\PersonFiles\PersonNode.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

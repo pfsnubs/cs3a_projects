@@ -6,6 +6,9 @@
 
 using namespace std;
 
+const int STUDENT_CODES = 2;
+const int TEACHER_CODES = 3;
+
 class Person {
 private:
     int id;         // ID number of student
@@ -14,7 +17,7 @@ private:
 
 public:
     // Constructors
-    Person();
+    Person(){};
     Person(int newId, string newName, int newCount);
 
     // Mutators
@@ -28,16 +31,20 @@ public:
     int getCount();
 };
 
+
 class Student
-    : protected Person
+    : public Person
 {
 private:
-    int code[2];
+    int code[STUDENT_CODES];
 public:
     // Constructors
-    Student(int newId, string newName, int newCount, int* code) 
-        :Person(int newId, string newName, int newCount){
-        this->code = code;
+    Student() {};
+    Student(int newId, string newName, int newCount, int* code)
+        :Person(newId, newName, newCount) {
+        for (int i = 0; i < STUDENT_CODES; i++) {
+            this->code[i] = code[i];
+        }
     };
 
     // Accessors
@@ -47,15 +54,18 @@ public:
 };
 
 class Teacher
-    : protected Person
+    : public Person
 {
 private:
-    int code[3];
+    int code[TEACHER_CODES];
 public:
     // Constructors
-    Teacher(int newId, string newName, int newCount, int* code) 
-        :Person(int newId, string newName, int newCount){
-        this->code = code;
+    Teacher() {};
+    Teacher(int newId, string newName, int newCount, int* code)
+        :Person(newId, newName, newCount) {
+        for (int i = 0; i < TEACHER_CODES; i++) {
+            this->code[i] = code[i];
+        }
     };
 
     // Accessors

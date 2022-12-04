@@ -1,63 +1,33 @@
 // 10380722, Anthony, Chen
-// Date: 9/18/2022
-// Lab6, Problem1
+// Date: 12/11/2022
+// Extra Credit: Template Function
 
-#include <string>
 #include <iostream>
 
 using namespace std;
 
-
-class student {
-private:
-    int id;
-    string name;
-    double gpa;
-public:
-    student();
-    student(int id);
-    student(int id, string name);
-    student(int id, string name, double gpa);
-
-    int getId();
-    string getName();
-    double getGpa();
-};
-
-student::student() : id(0), name("none"), gpa(0.0) {
-
-};
-
-student::student(int id) : id(id), name("none"), gpa(0.0) {
-
-};
-
-student::student(int id, string name) : id(id), name(name), gpa(0.0) {
-
-};
-
-student::student(int id, string name, double gpa) : id(id), name(name), gpa(gpa) {
-
-};
-
-int student::getId() {
-    return id;
+template <class T>
+int index_of_maximal(T* arr, int total) {
+    int maxIndex = 0;
+    for (int i = 0; i < total; i++) {
+        if (arr[i] > arr[maxIndex]) {
+            maxIndex = i;
+        }
+    }
+    return maxIndex;
 }
 
-string student::getName() {
-    return name;
-}
-
-double student::getGpa() {
-    return gpa;
-}
-
-
-
-// four function declarations
-int maind()
+int main()
 {
-    student s1 = {420, "bruh", 6.90};
-    cout << s1.getId() << " " << s1.getName() << " " << s1.getGpa();
+    int index;
+    int A[6] = { 10, 20, 30, 1, 2, 3 };
+    index = index_of_maximal(A, 6);
+    cout << "index : " << index << endl;
+    double B[7] = { 3.3, 1.2, 0.5, 2.2, 4.5, 1.7 };
+    index = index_of_maximal(B, 6);
+    cout << "index : " << index << endl;
+    char C[10] = { 'h', 'a', 'q', 'n', 'c', 'o', 'p', 'z', 's', 'j' };
+    index = index_of_maximal(C, 10);
+    cout << "index : " << index << endl;
     return 0;
 }

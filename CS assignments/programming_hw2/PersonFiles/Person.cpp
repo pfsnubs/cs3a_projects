@@ -1,13 +1,7 @@
-#include "student.h"
+#include "Person.h"
 using namespace std;
 
 // student Class constructors
-Person::Person() {
-    id = 0;
-    name = "New Student";
-    count = 0;
-}
-
 Person::Person(int newId, string newName, int newCount) {
     id = newId;
     name = newName;
@@ -24,7 +18,7 @@ void Person::setName(string newName) {
     name = newName;
 };
 void Person::setCount(int newScore) {
-    count = newCount;
+    count = newScore;
 };
 
 

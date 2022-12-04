@@ -1,0 +1,13 @@
+12
+Hailey 80 90
+Paul 88 73
+April 78 56
+Sonya 80 71
+John 56 68
+Pam 70 72
+Oliver 90 95
+Eugene 67 79
+Harry 81 65
+Jessica 56 82
+Eileen 98 77
+Lily 77 72
