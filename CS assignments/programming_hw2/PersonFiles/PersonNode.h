@@ -12,13 +12,13 @@ typedef struct PersonNode* PersonNodePtr;
 struct PersonNode
 {
 public:
-    Person* data; // needs to be pointer to use polymorphism (ok to keep, do same w/ book)
+    Person* data = NULL; // needs to be pointer to use polymorphism (ok to keep, do same w/ book)
     PersonNodePtr link = NULL;
     PersonNode() {};
 
     friend ostream& operator << (ostream& os, const PersonNodePtr& head) {
         for (PersonNodePtr ptr = head; ptr != NULL; ptr = ptr->link) {
-            os << ptr->data.getId() << "->";
+            os << *ptr->data << "->";
         };
 
         // declare NULL at end because ends will always point to null

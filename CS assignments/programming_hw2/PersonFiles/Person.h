@@ -29,6 +29,11 @@ public:
     int getId();
     string getName();
     int getCount();
+
+    friend ostream& operator << (ostream& os, const Person& p) {
+        os << p.id << " " << p.name << " " << p.count;
+        return os;
+    }
 };
 
 

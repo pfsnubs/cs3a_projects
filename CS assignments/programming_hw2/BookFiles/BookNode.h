@@ -12,13 +12,13 @@ typedef struct BookNode* BookNodePtr;
 struct BookNode
 {
 public:
-	Book data;
-    BookNodePtr link;
+	Book* data = NULL;
+    BookNodePtr link = NULL;
     BookNode() {};
 
     friend ostream& operator << (ostream& os, const BookNodePtr& head) {
         for (BookNodePtr ptr = head; ptr != NULL; ptr = ptr->link) {
-            //os << ptr->data << "->";
+            os << *ptr->data << "->";
         };
 
         // declare NULL at end because ends will always point to null
@@ -27,5 +27,3 @@ public:
         return os;
     }
 };
-
-

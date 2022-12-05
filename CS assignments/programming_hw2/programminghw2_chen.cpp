@@ -34,99 +34,341 @@ fxn()
 //int menu1();
 
 // functions
-int menu1() {
-    return 0;
+void menu1(BookNodePtr* books, const int listTotal) {
+    int codeSearch;
+    cout << "Enter code : ";
+    cin >> codeSearch;
+
+    string titleSearch;
+    cout << "Enter title : ";
+    cin >> titleSearch;
+
+    // try to find and access book
+    BookNodePtr& childBookList = books[0];
+    BookNodePtr& compBooklist = books[1];
+    BookNodePtr& novelList = books[2];
+    BookNodePtr selectedList = childBookList;
+
+    // children's books from 1001-2000
+    bool foundBook = false;
+    string bookType;
+    if (codeSearch >= 1001 && codeSearch <= 2000) {
+        bookType = "children's";
+        selectedList = childBookList;
+    }
+    // CS books from ID 2001-3000
+    else if (codeSearch >= 2001 && codeSearch <= 3000) {
+        bookType = "computer";
+        selectedList = compBooklist;
+    }
+    // novel books from ID 3001-4000
+    else if (codeSearch >= 3001 && codeSearch <= 4000) {
+        bookType = "novel";
+        selectedList = novelList;
+    }
+
+    // look through entry to find book
+    Book* bookPtr = NULL;
+    for (BookNodePtr temp = selectedList; temp != NULL; temp = temp->link) {
+        if (temp->data->getCodeID() == codeSearch
+            && temp->data->getBookName() == titleSearch) {
+            bookPtr = temp->data;
+            foundBook = true;
+        }
+    }
+
+    if (foundBook) {
+        cout << bookPtr->getBookName() << "(" << bookPtr->getCodeID() << ") exists." << endl;
+        cout << "category : " << bookType << endl;
+
+        // print special quantity from each book type
+        if (bookType == "children's") {
+            cout << "age : " << bookPtr->getAge() << endl;
+        }
+        else if (bookType == "computer") {
+            cout << "publisher : " << bookPtr->getPublisher() << endl;
+        }
+        else if (bookType == "novel") {
+            cout << "publish date : " << bookPtr->getPublishDate() << endl;
+        }
+        cout << bookPtr->getAvailable() << " available, " << bookPtr->getRented() << " rented" << endl;
+   }
 }
 
-void initPersonList(string dir, PersonNodePtr*& person, const int listTotal) {
-    // creates a Course struct from a file directory
-    ifstream infile;
-    infile.open(dir);
-
+void initPersonList(string dir, PersonNodePtr* person, const int listTotal) {    
     // find heads of list
-    // TODO: FIX NODE STUFF SO THAT WE CAN EDIT ENTRIES IN PERSON WITH ->
-    PersonNodePtr teacherList = person[0];
-    PersonNodePtr studentList = person[1];
+    PersonNodePtr& teacherList = person[0];
+    PersonNodePtr& studentList = person[1];  
+    teacherList = NULL;
+    studentList = NULL;
 
     // re-read file again and assign vars 
     int iter = 0;
+    ifstream infile;
+    infile.open(dir);
     while (!infile.eof()) {
-        cout << "BRUH" << endl;
-
-        // take in ID to determine class to create
-        int newId;
-        infile >> newId;
-
+        string line;
+      
         // set up new node
-        PersonNode* node = new PersonNode();
+        PersonNodePtr node = new PersonNode();
+        int newId;
         int newCount;
         int* code = new int;
         string newName;
-        infile >> newName >> newCount >> *code;
+        infile >> newId >> newName >> newCount >> *code;
+        getline(infile, line);
 
         // construct Teacher from ID 1-100
         if (newId >= 1 && newId <= 100) {
-            Teacher newPerson(newId, newName, newCount, code);
+            Teacher* newPerson = new Teacher(newId, newName, newCount, code);
             node->data = newPerson;
 
             // create node from head
-            PersonNodePtr prevNode = teacherList->link;
-            studentList->link = node;
-            node->link = prevNode;
+            if (teacherList == NULL) {
+                teacherList = node;
+            }
+            else if (teacherList->data->getId() < node->data->getId()) {
+                PersonNodePtr prev = NULL;
+
+                // traverse list from back
+                for (PersonNodePtr temp = teacherList; temp != NULL; temp = temp->link) {
+                    if (temp->data->getId() < node->data->getId()) {
+                        node->link = temp->link;
+                        temp->link = node;
+
+                        if (prev != NULL) {
+                            prev->link = temp;
+                        }
+                        prev = temp;
+                    }
+                }
+            }
+            else {
+                node->link = teacherList;
+                teacherList = node;
+            }
         }
         // construct Student from ID 101-300
         else if (newId >= 101 && newId <= 300) {
-            Student newPerson(newId, newName, newCount, code);
+            Student* newPerson = new Student(newId, newName, newCount, code);
             node->data = newPerson;
 
             // create node from head
-            PersonNodePtr prevNode = studentList->link;
-            studentList->link = node;
-            node->link = prevNode;
+            if (studentList == NULL) {
+                studentList = node;
+            }
+            else if (studentList->data->getId() < node->data->getId()) {
+                PersonNodePtr prev = NULL;
+
+                // traverse list from back
+                for (PersonNodePtr temp = studentList; temp != NULL; temp = temp->link) {
+                    if (temp->data->getId() < node->data->getId()) {
+                        node->link = temp->link;
+                        temp->link = node;
+
+                        if (prev != NULL) {
+                            prev->link = temp;
+                        }
+                        prev = temp;
+                    }
+                }
+            }
+            else {
+                node->link = studentList;
+                studentList = node;
+            }
         }
         
         iter++;
     }
-    cout << &teacherList;
+}
+
+void initBookList(string dir, BookNodePtr* books, const int listTotal) {
+    // find heads of list
+    BookNodePtr& childBookList = books[0];
+    BookNodePtr& compBooklist = books[1];
+    BookNodePtr& novelList = books[2];
+    childBookList = NULL;
+    compBooklist = NULL;
+    novelList = NULL;
+
+    // re-read file again and assign vars 
+    int iter = 0;
+    ifstream infile;
+    infile.open(dir);
+    while (!infile.eof()) {
+        string line;
+
+        // set up new node
+        BookNodePtr node = new BookNode();
+        int code;
+        string title;
+
+        // add available and rented AFTER book has been determined
+        // since assignment varies a 3rd custom variable after string title
+        int available;
+        int rented;
+        string newName;
+        infile >> code >> title;
+
+        // construct child books from ID 1001-2000
+        if (code >= 1001 && code <= 2000) {
+            // 3rd variable called age
+            int age;
+            infile >> age >> available >> rented;
+            getline(infile, line);
+
+            // create class
+            ChildrenBook* newPerson = new ChildrenBook(code, title, age, available, rented);
+            node->data = newPerson;
+
+            // create node from head
+            if (childBookList == NULL) {
+                childBookList = node;
+            }
+            else if (childBookList->data->getCodeID() < node->data->getCodeID()) {
+                BookNodePtr prev = NULL;
+
+                // traverse list from back
+                for (BookNodePtr temp = childBookList; temp != NULL; temp = temp->link) {
+                    if (temp->data->getCodeID() < node->data->getCodeID()) {
+                        node->link = temp->link;
+                        temp->link = node;
+
+                        if (prev != NULL) {
+                            prev->link = temp;
+                        }
+                        prev = temp;
+                    }
+                }
+            }
+            else {
+                node->link = childBookList;
+                childBookList = node;
+            }
+        }
+        // construct CS books from ID 2001-3000
+        else if (code >= 2001 && code <= 3000) {
+            // 3rd variable called publisher
+            string publisher;
+            infile >> publisher >> available >> rented;
+            getline(infile, line);
+
+            // create class
+            ComputerBook* newPerson = new ComputerBook(code, title, publisher, available, rented);
+            node->data = newPerson;
+
+            // create node from head
+            if (compBooklist == NULL) {
+                compBooklist = node;
+            }
+            else if (compBooklist->data->getCodeID() < node->data->getCodeID()) {
+                BookNodePtr prev = NULL;
+
+                // traverse list from back
+                for (BookNodePtr temp = compBooklist; temp != NULL; temp = temp->link) {
+                    if (temp->data->getCodeID() < node->data->getCodeID()) {
+                        node->link = temp->link;
+                        temp->link = node;
+
+                        if (prev != NULL) {
+                            prev->link = temp;
+                        }
+                        prev = temp;
+                    }
+                }
+            }
+            else {
+                node->link = compBooklist;
+                compBooklist = node;
+            }
+        }
+        // construct novel books from ID 3001-4000
+        else if (code >= 3001 && code <= 4000) {
+            // 3rd variable called publisher
+            int publish_date;
+            infile >> publish_date >> available >> rented;
+            getline(infile, line);
+
+            // create class
+            Novel* newPerson = new Novel(code, title, publish_date, available, rented);
+            node->data = newPerson;
+
+            // create node from head
+            if (novelList == NULL) {
+                novelList = node;
+            }
+            else if (novelList->data->getCodeID() < node->data->getCodeID()) {
+                BookNodePtr prev = NULL;
+
+                // traverse list from back
+                for (BookNodePtr temp = novelList; temp != NULL; temp = temp->link) {
+                    if (temp->data->getCodeID() < node->data->getCodeID()) {
+                        node->link = temp->link;
+                        temp->link = node;
+
+                        if (prev != NULL) {
+                            prev->link = temp;
+                        }
+                        prev = temp;
+                    }
+                }
+            }
+            else {
+                node->link = novelList;
+                novelList = node;
+            }
+        }
+
+        iter++;
+    }
 }
 
 int main()
 {
-    PersonNodePtr* person[PERSON_LIST_TOTAL];
+    PersonNodePtr person[PERSON_LIST_TOTAL];
     BookNodePtr book[BOOK_LIST_TOTAL];
     initPersonList("programming_hw2\\person.txt", person, PERSON_LIST_TOTAL);
-    //initBookList("programming_hw2\\book.txt", book, BOOK_LIST_TOTAL);
-    
+    initBookList("programming_hw2\\book.txt", book, BOOK_LIST_TOTAL);
+
     // display menu
-    // print menu
-    cout << LINE_HEADER << endl;
-    cout << "\tMenu";
-    cout << LINE_HEADER << endl;
-    cout << "1. Search a book" << endl;
-    cout << "2. Rent a book" << endl;
-    cout << "3. Return a book" << endl;
-    cout << "4. Show my information" << endl;
-    cout << "5. Show all books" << endl;
-    cout << "6. Exit" << endl;
+    bool stopLoop = false;
 
-    // display input
-    int input;
-    cout << endl;
-    cout << "Select (1`5) : ";
-    cin >> input;
-    cout << endl;
+    while (!stopLoop) {
+        cout << LINE_HEADER << endl;
+        cout << "\tMenu" << endl;
+        cout << LINE_HEADER << endl;
+        cout << "1. Search a book" << endl;
+        cout << "2. Rent a book" << endl;
+        cout << "3. Return a book" << endl;
+        cout << "4. Show my information" << endl;
+        cout << "5. Show all books" << endl;
+        cout << "6. Exit" << endl;
 
-    // handle menu thru function input
-    switch (input) {
-    case 1:
-        menu1();
-        break;
-    case 2:
-        break;
-    case 3:
-        break;
-    case 4:
-        break;
+        // display input
+        int input;
+        cout << endl;
+        cout << "Select (1`6) : ";
+        cin >> input;
+        cout << endl;
+
+        // handle menu thru function input
+        switch (input) {
+        case 1:
+            menu1(book, BOOK_LIST_TOTAL);
+            break;
+        case 2:
+            break;
+        case 3:
+            break;
+        case 4:
+            break;
+        case 5:
+            break;
+        case 6:
+            stopLoop = true;
+            break;
+        }
     }
     return 0;
 }

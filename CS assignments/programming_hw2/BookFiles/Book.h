@@ -28,6 +28,24 @@ public:
     string getBookName();
     int getAvailable();
     int getRented();
+
+    // ChildrenBook virtual functions
+    virtual void setAge(int newAge){};
+    virtual int getAge() { return 0; };
+
+    // ComputerBook virtual functions
+    virtual void setPublisher(int newPublisher){};
+    virtual string getPublisher() { return ""; };
+
+    // Novel virtual functions
+    virtual void setPublishDate(int newPublishDate){};
+    virtual int getPublishDate() { return 0; };
+
+    // friend fxns
+    friend ostream& operator << (ostream& os, const Book& b) {
+        os << b.code << " " << b.title << " " << b.available << " " << b.rented;
+        return os;
+    }
 };
 
 class ChildrenBook : public Book {
