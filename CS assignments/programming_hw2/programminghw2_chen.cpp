@@ -34,66 +34,130 @@ fxn()
 //int menu1();
 
 // functions
-void menu1(BookNodePtr* books, const int listTotal) {
-    int codeSearch;
-    cout << "Enter code : ";
-    cin >> codeSearch;
+PersonNodePtr personByID(PersonNodePtr* person, int id) {
+    PersonNodePtr& teacherList = person[0];
+    PersonNodePtr& studentList = person[1];
 
-    string titleSearch;
-    cout << "Enter title : ";
-    cin >> titleSearch;
+    // determine node list to search through first
+    PersonNodePtr selectedNodeList = NULL;
+    // teachers from ID 1-100
+    if (id >= 1 && id <= 100) {
+        selectedNodeList = teacherList;
+    }
+    // students from ID 101-300
+    else if (id >= 101 && id <= 300) {
+        selectedNodeList = studentList;
+    }
 
-    // try to find and access book
+    PersonNodePtr selectedNode = NULL;
+    // try to find node in whichever list
+    for (PersonNodePtr temp = selectedNodeList; temp != NULL; temp = temp->link) {
+        if (temp->data->getId() == id) {
+            selectedNode = temp;
+        }
+    }
+
+    if (selectedNode == NULL) {
+        // TODO: error here
+    }
+
+    return selectedNode;
+}
+
+PersonNodePtr personByName(PersonNodePtr* person, string name) {
+    PersonNodePtr& teacherList = person[0];
+    PersonNodePtr& studentList = person[1];
+    PersonNodePtr selectedNode = NULL;
+    
+    // try to find in teacher list
+    for (PersonNodePtr temp = teacherList; temp != NULL; temp = temp->link) {
+        if (temp->data->getName() == name) {
+            selectedNode = temp;
+        }
+    }
+
+    // try to find in students list
+    for (PersonNodePtr temp = studentList; temp != NULL; temp = temp->link) {
+        if (temp->data->getName() == name) {
+            selectedNode = temp;
+        }
+    }
+
+    if (selectedNode == NULL) {
+        // TODO: error here
+    }
+
+    return selectedNode;
+}
+
+BookNodePtr bookByCode(BookNodePtr* books, int code) {
     BookNodePtr& childBookList = books[0];
     BookNodePtr& compBooklist = books[1];
     BookNodePtr& novelList = books[2];
-    BookNodePtr selectedList = childBookList;
+    BookNodePtr selectedBookList = NULL;
 
-    // children's books from 1001-2000
-    bool foundBook = false;
-    string bookType;
-    if (codeSearch >= 1001 && codeSearch <= 2000) {
-        bookType = "children's";
-        selectedList = childBookList;
+    // children's books from ID 1001-2000
+    if (code >= 1001 && code <= 2000) {
+        selectedBookList = childBookList;
     }
     // CS books from ID 2001-3000
-    else if (codeSearch >= 2001 && codeSearch <= 3000) {
-        bookType = "computer";
-        selectedList = compBooklist;
+    else if (code >= 2001 && code <= 3000) {
+        selectedBookList = compBooklist;
     }
     // novel books from ID 3001-4000
-    else if (codeSearch >= 3001 && codeSearch <= 4000) {
-        bookType = "novel";
-        selectedList = novelList;
+    else if (code >= 3001 && code <= 4000) {
+        selectedBookList = novelList;
     }
 
-    // look through entry to find book
-    Book* bookPtr = NULL;
-    for (BookNodePtr temp = selectedList; temp != NULL; temp = temp->link) {
-        if (temp->data->getCodeID() == codeSearch
-            && temp->data->getBookName() == titleSearch) {
-            bookPtr = temp->data;
-            foundBook = true;
+    BookNodePtr selectedNode = NULL;
+    // try to find node in whichever list
+    for (BookNodePtr temp = selectedBookList; temp != NULL; temp = temp->link) {
+        if (temp->data->getCodeID() == code) {
+            selectedNode = temp;
         }
     }
 
-    if (foundBook) {
-        cout << bookPtr->getBookName() << "(" << bookPtr->getCodeID() << ") exists." << endl;
-        cout << "category : " << bookType << endl;
+    if (selectedNode == NULL) {
+        // TODO: error here
+    }
 
-        // print special quantity from each book type
-        if (bookType == "children's") {
-            cout << "age : " << bookPtr->getAge() << endl;
-        }
-        else if (bookType == "computer") {
-            cout << "publisher : " << bookPtr->getPublisher() << endl;
-        }
-        else if (bookType == "novel") {
-            cout << "publish date : " << bookPtr->getPublishDate() << endl;
-        }
-        cout << bookPtr->getAvailable() << " available, " << bookPtr->getRented() << " rented" << endl;
-   }
+    return selectedNode;
 }
+
+BookNodePtr bookByTitle(BookNodePtr* books, string title) {
+    BookNodePtr& childBookList = books[0];
+    BookNodePtr& compBooklist = books[1];
+    BookNodePtr& novelList = books[2];
+    BookNodePtr selectedNode = NULL;
+
+    // try to find in children's book list
+    for (BookNodePtr temp = childBookList; temp != NULL; temp = temp->link) {
+        if (temp->data->getBookName() == title) {
+            selectedNode = temp;
+        }
+    }
+
+    // try to find in computer book list
+    for (BookNodePtr temp = compBooklist; temp != NULL; temp = temp->link) {
+        if (temp->data->getBookName() == title) {
+            selectedNode = temp;
+        }
+    }
+
+    // try to find in novel list
+    for (BookNodePtr temp = novelList; temp != NULL; temp = temp->link) {
+        if (temp->data->getBookName() == title) {
+            selectedNode = temp;
+        }
+    }
+
+    if (selectedNode == NULL) {
+        // TODO: error here
+    }
+
+    return selectedNode;
+}
+
 
 void initPersonList(string dir, PersonNodePtr* person, const int listTotal) {    
     // find heads of list
@@ -324,6 +388,104 @@ void initBookList(string dir, BookNodePtr* books, const int listTotal) {
     }
 }
 
+void menu1(BookNodePtr* books, const int listTotal) {
+    int codeSearch;
+    cout << "Enter code : ";
+    cin >> codeSearch;
+
+    string titleSearch;
+    cout << "Enter title : ";
+    cin >> titleSearch;
+
+    // try to find and access book
+    BookNodePtr& childBookList = books[0];
+    BookNodePtr& compBooklist = books[1];
+    BookNodePtr& novelList = books[2];
+    BookNodePtr selectedList = childBookList;
+
+    // children's books from 1001-2000
+    bool foundBook = false;
+    string bookType;
+    if (codeSearch >= 1001 && codeSearch <= 2000) {
+        bookType = "children's";
+        selectedList = childBookList;
+    }
+    // CS books from ID 2001-3000
+    else if (codeSearch >= 2001 && codeSearch <= 3000) {
+        bookType = "computer";
+        selectedList = compBooklist;
+    }
+    // novel books from ID 3001-4000
+    else if (codeSearch >= 3001 && codeSearch <= 4000) {
+        bookType = "novel";
+        selectedList = novelList;
+    }
+
+    // look through entry to find book
+    Book* bookPtr = NULL;
+    for (BookNodePtr temp = selectedList; temp != NULL; temp = temp->link) {
+        if (temp->data->getCodeID() == codeSearch
+            && temp->data->getBookName() == titleSearch) {
+            bookPtr = temp->data;
+            foundBook = true;
+        }
+    }
+
+    if (foundBook) {
+        cout << bookPtr->getBookName() << "(" << bookPtr->getCodeID() << ") exists." << endl;
+        cout << "category : " << bookType << endl;
+
+        // print special quantity from each book type
+        if (bookType == "children's") {
+            cout << "age : " << bookPtr->getAge() << endl;
+        }
+        else if (bookType == "computer") {
+            cout << "publisher : " << bookPtr->getPublisher() << endl;
+        }
+        else if (bookType == "novel") {
+            cout << "publish date : " << bookPtr->getPublishDate() << endl;
+        }
+        cout << bookPtr->getAvailable() << " available, " << bookPtr->getRented() << " rented" << endl;
+    }
+}
+
+void menu2(PersonNodePtr* person, const int personTotal, BookNodePtr* books, const int bookTotal) {
+    int userId;
+    cout << "Enter id : ";
+    cin >> userId;
+
+    string titleSearch;
+    cout << "Enter book title : ";
+    cin >> titleSearch;
+
+    // try to find and access book
+    PersonNodePtr selectedPerson = personByID(person, userId);
+    BookNodePtr selectedBook = bookByTitle(books, titleSearch);
+
+    char choice;
+
+    // TODO: add plural "books" if more than 1
+    cout << "You are" << selectedPerson->data->getName() 
+        << ". You rented " << selectedPerson->data->getCount() << " book." 
+        << endl;
+    cout << "Do you want to rent '" << selectedBook->data->getBookName() << "' (y/n)?" ;
+    // TODO: add error for choice input
+    cin >> choice;
+    
+    // TODO: add error for over-rented
+    cout << "***** Rent succeeded. Check your info!" << endl;
+    // increment person's total count 
+    selectedPerson->data->setCount(selectedPerson->data->getCount() + 1);
+
+    // adjust values of book
+
+    // editor's note: probably better if we just make a rent_book function ngl
+    selectedBook->data->setAvailable(selectedBook->data->getAvailable() - 1);
+
+
+}
+
+
 int main()
 {
     PersonNodePtr person[PERSON_LIST_TOTAL];
@@ -358,6 +520,7 @@ int main()
             menu1(book, BOOK_LIST_TOTAL);
             break;
         case 2:
+            menu2(person, PERSON_LIST_TOTAL, book, BOOK_LIST_TOTAL);
             break;
         case 3:
             break;
