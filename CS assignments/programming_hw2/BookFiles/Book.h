@@ -29,6 +29,10 @@ public:
     int getAvailable();
     int getRented();
 
+    // Other functions
+    void attemptToRent();
+    void attemptToReturn();
+
     // ChildrenBook virtual functions
     virtual void setAge(int newAge){};
     virtual int getAge() { return 0; };

@@ -6,6 +6,7 @@
 #include <iostream>
 #include <fstream>
 #include <iomanip>
+#include <sstream>
 
 #include "BookFiles\\Book.h"
 #include "BookFiles\\BookNode.h"
@@ -172,18 +173,35 @@ void initPersonList(string dir, PersonNodePtr* person, const int listTotal) {
     infile.open(dir);
     while (!infile.eof()) {
         string line;
-      
+        getline(infile, line);
+
         // set up new node
         PersonNodePtr node = new PersonNode();
         int newId;
         int newCount;
-        int* code = new int;
         string newName;
-        infile >> newId >> newName >> newCount >> *code;
-        getline(infile, line);
+
+        // stringstream class check
+        stringstream ss;
+        ss << line;
+
+        // filter first few class vars
+        ss >> newId >> newName >> newCount;
 
         // construct Teacher from ID 1-100
-        if (newId >= 1 && newId <= 100) {
+        if (newId >= 1 && newId <= 100){
+            // create code with entries of books rented off the latter string
+            int* code = new int[TEACHER_CODES]{0};
+            string codeStr;
+            int i = 0;
+            while (getline(ss, codeStr, ' '))
+            {
+                if (codeStr.length() > 0) {
+                    code[i] = stoi(codeStr);
+                    i++;
+                }
+            }
+
             Teacher* newPerson = new Teacher(newId, newName, newCount, code);
             node->data = newPerson;
 
@@ -214,6 +232,17 @@ void initPersonList(string dir, PersonNodePtr* person, const int listTotal) {
         }
         // construct Student from ID 101-300
         else if (newId >= 101 && newId <= 300) {
+            // create code with entries of books rented off the latter string
+            int* code = new int[STUDENT_CODES]{0};
+            string codeStr;
+            int i = 0;
+            while (getline(ss, codeStr, ' '))
+            {
+                if (codeStr.length() > 0) {
+                    code[i] = stoi(codeStr);
+                    i++;
+                }
+            }
             Student* newPerson = new Student(newId, newName, newCount, code);
             node->data = newPerson;
 
@@ -462,27 +491,178 @@ void menu2(PersonNodePtr* person, const int personTotal, BookNodePtr* books, con
     PersonNodePtr selectedPerson = personByID(person, userId);
     BookNodePtr selectedBook = bookByTitle(books, titleSearch);
 
+    int personCount = selectedPerson->data->getCount();
+    string personName = selectedPerson->data->getName();
+    if (personCount == 1) {
+        cout << "You are " << personName
+            << ". You rented " << personCount << " book."
+            << endl;
+    }
+    else {
+        cout << "You are " << personName
+            << ". You rented " << personCount << " books."
+            << endl;
+    }
+    
     char choice;
-
-    // TODO: add plural "books" if more than 1
-    cout << "You are" << selectedPerson->data->getName() 
-        << ". You rented " << selectedPerson->data->getCount() << " book." 
-        << endl;
-    cout << "Do you want to rent '" << selectedBook->data->getBookName() << "' (y/n)?" ;
-    // TODO: add error for choice input
+    cout << "Do you want to rent '" << selectedBook->data->getBookName() << "' (y/n)? ";
     cin >> choice;
     
-    // TODO: add error for over-rented
-    cout << "***** Rent succeeded. Check your info!" << endl;
-    // increment person's total count 
-    selectedPerson->data->setCount(selectedPerson->data->getCount() + 1);
+    if (choice == 'y') {
+        // TODO: add error for over-rented
 
-    // adjust values of book
+        int personID = selectedPerson->data->getId();
+        int bookID = selectedBook->data->getCodeID();
+        
+        int maxRentals;
+        // teachers from ID 1-100
+        if (personID >= 1 && personID <= 100) {
+            maxRentals = TEACHER_CODES;
+        }
+        // students from ID 101-300
+        else if (personID >= 101 && personID <= 300) {
+            maxRentals = STUDENT_CODES;
+        }
 
-    // editor's note: probably better if we just make a rent_book function ngl
-    selectedBook->data->setAvailable(selectedBook->data->getAvailable() - 1);
+        // make sure book has an available rental
+        // and that the person doesn't max out codes or has book already
+        int bookAvailables = selectedBook->data->getAvailable();
+        if (bookAvailables > 0
+            && personCount != maxRentals 
+            && !selectedPerson->data->checkCodeExists(selectedPerson->data, bookID, maxRentals) 
+            ) {
+            // start transaction for rental
+            cout << selectedPerson << endl;
+            selectedPerson->data->rentBook(selectedPerson->data, bookID, maxRentals);
+            selectedBook->data->attemptToRent();
+            
+            cout << "***** Rent succeeded. Check your info!" << endl;
+            cout << selectedPerson << endl;
+        }
+        else {
+            // TODO: put handler for too much books and the like
+        }
+        
+    }
+    else if (choice == 'n') {
+
+    }
+    else {
+        // TODO: add error for choice input
+    }
+
+    
+    
 
 
+}
+
+void menu3(PersonNodePtr* person, const int personTotal, BookNodePtr* books, const int bookTotal) {
+    int userId;
+    cout << "Enter id : ";
+    cin >> userId;
+
+    int bookCode;
+    cout << "Enter book code to return : ";
+    cin >> bookCode;
+
+    // try to find and access book
+    PersonNodePtr selectedPerson = personByID(person, userId);
+    BookNodePtr selectedBook = bookByCode(books, bookCode);
+
+    char choice;
+    cout << "Do you want to return '" << selectedBook->data->getBookName() << "' (y/n)? ";
+    cin >> choice;
+
+    if (choice == 'y') {
+        // TODO: add error for over-rented
+
+        int personID = selectedPerson->data->getId();
+        int bookID = selectedBook->data->getCodeID();
+
+        int maxRentals;
+        // teachers from ID 1-100
+        if (personID >= 1 && personID <= 100) {
+            maxRentals = TEACHER_CODES;
+        }
+        // students from ID 101-300
+        else if (personID >= 101 && personID <= 300) {
+            maxRentals = STUDENT_CODES;
+        }
+
+        // make sure person has book checked out
+        if (selectedPerson->data->checkCodeExists(selectedPerson->data, bookID, maxRentals)) {
+            // start transaction for returns
+            cout << selectedPerson << endl;
+            selectedPerson->data->returnBook(selectedPerson->data, bookID, maxRentals);
+            selectedBook->data->attemptToRent();
+
+            cout << "***** Return succeeded. Check your info!" << endl;
+            cout << selectedPerson << endl;
+        }
+        else {
+            // TODO: put handler for too much books and the like
+        }
+
+    }
+    else if (choice == 'n') {
+
+    }
+    else {
+        // TODO: add error for choice input
+    }
+}
+
+void menu4(PersonNodePtr* person, const int personTotal, BookNodePtr* books, const int bookTotal) {
+    int userId;
+    cout << "Enter id : ";
+    cin >> userId;
+
+    string name;
+    cout << "Enter your name : ";
+    cin >> name;
+
+    // try to find and access book
+    PersonNodePtr selectedPerson = personByID(person, userId);
+    int countBooks = selectedPerson->data->getCount();
+    if (countBooks == 1) {
+        cout << "You rented " << countBooks << " book." << endl;
+    }
+    else {
+        cout << "You rented " << countBooks << " books." << endl;
+    }
+    
+    int maxCodes;
+    // list all books from Teacher from ID 1-100
+    if (userId >= 1 && userId <= 100) {
+        maxCodes = TEACHER_CODES;
+    }
+    // list all books from Student from ID 101-300
+    else if (userId >= 101 && userId <= 300) {
+        maxCodes = STUDENT_CODES;
+    }
+
+    int* allCodes = selectedPerson->data->getCodes();
+    for (int i = 0; i < maxCodes; i++) {
+        if (allCodes[i] != 0) {
+            BookNodePtr selectedBook = bookByCode(books, allCodes[i]);
+            cout << "* " << selectedBook->data->getBookName() << " - ";
+
+            // show age of children's books from ID 1001-2000
+            if (allCodes[i] >= 1001 && allCodes[i] <= 2000) {
+                cout << "age " << selectedBook->data->getAge() << endl;
+            }
+            // show publisher of CS books from ID 2001-3000
+            else if (allCodes[i] >= 2001 && allCodes[i] <= 3000) {
+                cout << "publisher " << selectedBook->data->getPublisher() << endl;
+            }
+            // show publish date of novel books from ID 3001-4000
+            else if (allCodes[i] >= 3001 && allCodes[i] <= 4000) {
+                cout << "publish date " << selectedBook->data->getPublishDate() << endl;
+            }
+        }
+    }
+    cout << endl;
 }
 
 
@@ -492,6 +672,8 @@ int main()
     BookNodePtr book[BOOK_LIST_TOTAL];
     initPersonList("programming_hw2\\person.txt", person, PERSON_LIST_TOTAL);
     initBookList("programming_hw2\\book.txt", book, BOOK_LIST_TOTAL);
+
+    cout << person[0];
 
     // display menu
     bool stopLoop = false;
@@ -523,8 +705,10 @@ int main()
             menu2(person, PERSON_LIST_TOTAL, book, BOOK_LIST_TOTAL);
             break;
         case 3:
+            menu3(person, PERSON_LIST_TOTAL, book, BOOK_LIST_TOTAL);
             break;
         case 4:
+            menu4(person, PERSON_LIST_TOTAL, book, BOOK_LIST_TOTAL);
             break;
         case 5:
             break;

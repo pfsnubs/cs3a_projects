@@ -53,3 +53,16 @@ int Book::getAvailable() {
 int Book::getRented() {
     return rented;
 };
+
+// Other
+void Book::attemptToRent() {
+    // adjust rent and availability if rentable
+    available--;
+    rented++;
+};
+
+void Book::attemptToReturn() {
+    // adjust rent and availability if returning
+    available++;
+    rented--;
+};

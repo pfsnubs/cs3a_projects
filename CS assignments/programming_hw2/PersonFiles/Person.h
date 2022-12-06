@@ -14,7 +14,7 @@ private:
     int id;         // ID number of student
     string name;    // name of student
     int count;      // total number of books rented
-
+    string classType;
 public:
     // Constructors
     Person(){};
@@ -30,10 +30,47 @@ public:
     string getName();
     int getCount();
 
-    friend ostream& operator << (ostream& os, const Person& p) {
+    // functions
+    bool checkCodeExists(Person* p, int bookID, int maxCodes) {
+        bool found = false;
+        for (int i = 0; i < maxCodes; i++) {
+            if (p->getCodes()[i] == bookID) {
+                found = true;
+            }
+        }
+        return found;
+    }
+
+    void rentBook(Person* p, int bookID, int maxCodes) {        
+        // increase count of rentals and add book ID to codes
+        p->setCount(p->getCount() + 1);
+        for (int i = 0; i < maxCodes; i++) {
+            if (p->getCodes()[i] == 0) {
+                p->getCodes()[i] = bookID;
+            }
+        }
+    }
+
+    void returnBook(Person* p, int bookID, int maxCodes) {
+        // decrease count of rentals and remove book ID from codes
+        p->setCount(p->getCount() - 1);
+        for (int i = 0; i < maxCodes; i++) {
+            if (p->getCodes()[i] == bookID) {
+                p->getCodes()[i] = 0;
+            }
+        }
+    }
+    
+    friend ostream& operator << (ostream& os, Person& p) {
         os << p.id << " " << p.name << " " << p.count;
+        for (int i = 0; i < 2; i++) {
+            os << "CODE " << p.getCodes()[i] << endl;
+        }
         return os;
     }
+
+    // Custom functions
+    virtual int* getCodes() { return 0; };
 };
 
 
