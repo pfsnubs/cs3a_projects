@@ -505,13 +505,14 @@ void menu2(PersonNodePtr* person, const int personTotal, BookNodePtr* books, con
         cout << "Enter id : ";
         try {
             cin >> userId;
+
+            // clear out chars if errored
             cin.clear();
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
             selectedPerson = personByID(person, userId);
 
             // initialize person ID
             personID = selectedPerson->data->getId();
-            int personCount = selectedPerson->data->getCount();
 
             // initialize max rentals person can rent
             // teachers from ID 1-100
@@ -610,18 +611,34 @@ void menu2(PersonNodePtr* person, const int personTotal, BookNodePtr* books, con
 void menu3(PersonNodePtr* person, const int personTotal, BookNodePtr* books, const int bookTotal) {
     PersonNodePtr selectedPerson = nullptr;
     BookNodePtr selectedBook = nullptr;
+    int personID;
+    int bookID;
+    int maxRentals;
 
-    // TODO: fix user id input and also add err inputs
     // handle error inputs for user id and book title
     int userId = -1;
     while (userId == -1) {
         cout << "Enter id : ";
         try {
             cin >> userId;
+
+            // clear out chars if errored
             cin.clear();
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
             selectedPerson = personByID(person, userId);
 
+            // initialize person ID
+            personID = selectedPerson->data->getId();
+
+            // initialize max rentals person can rent
+            // teachers from ID 1-100
+            if (personID >= 1 && personID <= 100) {
+                maxRentals = TEACHER_CODES;
+            }
+            // students from ID 101-300
+            else if (personID >= 101 && personID <= 300) {
+                maxRentals = STUDENT_CODES;
+            }
         }
         catch (ErrorMessage err) {
             userId = -1;
@@ -629,55 +646,58 @@ void menu3(PersonNodePtr* person, const int personTotal, BookNodePtr* books, con
         }
     }
 
+    int bookCode = -1;
+    while (bookCode == -1) {
+        cout << "Enter book code to return : ";
+        try {
+            cin >> bookCode;
 
+            // clear out chars if errored
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            selectedBook = bookByCode(books, bookCode);
 
-    int bookCode;
-    cout << "Enter book code to return : ";
-    cin >> bookCode;    
-
-    char choice;
-    cout << "Do you want to return '" << selectedBook->data->getBookName() << "' (y/n)? ";
-    cin >> choice;
-
-    if (choice == 'y') {
-        // TODO: add error for over-rented
-        int personID = selectedPerson->data->getId();
-        int bookID = selectedBook->data->getCodeID();
-
-        int maxRentals;
-        // teachers from ID 1-100
-        if (personID >= 1 && personID <= 100) {
-            maxRentals = TEACHER_CODES;
+            // error check: check if book is available
+            if (selectedPerson->data->checkCodeExists(selectedPerson->data, bookCode, maxRentals)) {
+                throw ErrorMessage("All books of this code is unavailable to rent. Please try again.");
+            }
         }
-        // students from ID 101-300
-        else if (personID >= 101 && personID <= 300) {
-            maxRentals = STUDENT_CODES;
+        catch (ErrorMessage err) {
+            bookCode = -1;
+            cout << err.error << endl;
         }
-
-        // make sure person has book checked out
-        if (selectedPerson->data->checkCodeExists(selectedPerson->data, bookID, maxRentals)) {
-            // start transaction for returns
-            cout << selectedPerson << endl;
-            selectedPerson->data->returnBook(selectedPerson->data, bookID, maxRentals);
-            selectedBook->data->attemptToRent();
-
-            cout << "***** Return succeeded. Check your info!" << endl;
-            cout << selectedPerson << endl;
-        }
-        else {
-            // TODO: put handler for too much books and the like
-        }
-
     }
-    else if (choice == 'n') {
 
-    }
-    else {
-        // TODO: add error for choice input
+    char choice = ' ';
+    while (choice == ' ') {
+        cout << "Do you want to return '" << selectedBook->data->getBookName() << "' (y/n)? ";
+        try {
+            cin >> choice;
+
+            // proceed choices
+            if (choice == 'y') {
+                // start transaction for returns
+                cout << selectedPerson << endl;
+                selectedPerson->data->returnBook(selectedPerson->data, bookID, maxRentals);
+                selectedBook->data->attemptToRent();
+
+                cout << "***** Return succeeded. Check your info!" << endl;
+                cout << selectedPerson << endl;
+            }
+            else if (choice == 'n') {
+                cout << "***** Return failed. Please try again." << endl;
+            }
+        }
+        catch (ErrorMessage err) {
+            choice = ' ';
+            cout << err.error << endl;
+        }
     }
 }
 
 void menu4(PersonNodePtr* person, const int personTotal, BookNodePtr* books, const int bookTotal) {
+    // TODO: For enter id and name for the other menus too, make a function to check both name and code
+    // handle error inputs for user id and book title
     int userId;
     cout << "Enter id : ";
     cin >> userId;
@@ -852,6 +872,8 @@ int main()
                 cout << endl;
                 cout << "Select (1`6) : ";
                 cin >> input;
+
+                // clear out chars if errored
                 cin.clear();
                 cin.ignore(numeric_limits<streamsize>::max(), '\n');
                 cout << endl;
