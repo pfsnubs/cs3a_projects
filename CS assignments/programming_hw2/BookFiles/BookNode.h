@@ -5,17 +5,20 @@
 #include <iomanip>
 #include "Book.h"
 
-// namespaces & typedefs
+// Constants
 using namespace std;
 typedef struct BookNode* BookNodePtr;
 
 struct BookNode
 {
 public:
-	Book* data = NULL;
-    BookNodePtr link = NULL;
+	Book* data = NULL;          // Book pointer used to handle different book types
+    BookNodePtr link = NULL;    // link used to point to proceeding BookNode
+
+    // Constructor
     BookNode() {};
 
+    // Functions
     friend ostream& operator << (ostream& os, const BookNodePtr& head) {
         for (BookNodePtr ptr = head; ptr != NULL; ptr = ptr->link) {
             os << *ptr->data << "->";

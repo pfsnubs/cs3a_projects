@@ -5,17 +5,20 @@
 #include <iomanip>
 #include "Person.h"
 
-// namespaces & typedefs
+// Constants
 using namespace std;
 typedef struct PersonNode* PersonNodePtr;
 
 struct PersonNode
 {
 public:
-    Person* data = NULL; // needs to be pointer to use polymorphism (ok to keep, do same w/ book)
-    PersonNodePtr link = NULL;
-    PersonNode() {};
+    Person* data = NULL;        // Person pointer used for polymorphism as well
+    PersonNodePtr link = NULL;  // Link to proceeding PersonNode
 
+    // Constructors
+    PersonNode() {};        
+
+    // Functions
     friend ostream& operator << (ostream& os, const PersonNodePtr& head) {
         for (PersonNodePtr ptr = head; ptr != NULL; ptr = ptr->link) {
             os << *ptr->data << "->";

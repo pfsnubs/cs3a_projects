@@ -3,6 +3,8 @@
 #include <fstream>
 #include <iomanip>
 #pragma once
+
+// Constants
 using namespace std;
 
 // parent Book class
@@ -30,7 +32,26 @@ public:
     int getRented();
 
     // Other functions
+
+    /*
+    Book::attemptToRent()
+        INPUT:
+            No input required to call function.
+        OUTPUT:
+            Rents a book by decrementing availability
+            and incrementing # of books rented already
+            for the system
+    */
     void attemptToRent();
+
+    /*
+    Book::attemptToRent()
+        INPUT:
+            No input required to call function.
+        OUTPUT:
+            Returns a book by decrementing # of books rented
+            already and incrementing availability of books.
+    */
     void attemptToReturn();
 
     // ChildrenBook virtual functions
@@ -54,7 +75,7 @@ public:
 
 class ChildrenBook : public Book {
 private:
-    int age;
+    int age;    // Age suggestion for children
 public:
     // Constructors
     ChildrenBook() {};
@@ -76,7 +97,7 @@ public:
 
 class ComputerBook : public Book {
 private:
-    string publisher;
+    string publisher;   // Name of publisher
 public:
     // Constructors
     ComputerBook() {};
@@ -98,7 +119,7 @@ public:
 
 class Novel : public Book {
 private:
-    int publish_date;
+    int publish_date;   // Year of book published
 public:
     // Constructors
     Novel() {};

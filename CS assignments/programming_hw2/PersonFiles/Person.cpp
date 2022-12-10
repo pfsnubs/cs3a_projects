@@ -1,4 +1,6 @@
 #include "Person.h"
+
+// Constants
 using namespace std;
 
 // student Class constructors
@@ -32,3 +34,37 @@ string Person::getName() {
 int Person::getCount() {
     return count;
 };
+
+// Other functions
+bool Person::checkCodeExists(Person* p, int bookID, int maxCodes) {
+    bool found = false;
+    for (int i = 0; i < maxCodes; i++) {
+        if (p->getCodes()[i] == bookID) {
+            found = true;
+            break;
+        }
+    }
+    return found;
+}
+
+void Person::rentBook(Person* p, int bookID, int maxCodes) {
+    // increase count of rentals and add book ID to codes
+    p->setCount(p->getCount() + 1);
+    for (int i = 0; i < maxCodes; i++) {
+        if (p->getCodes()[i] == 0) {
+            p->getCodes()[i] = bookID;
+            break;
+        }
+    }
+}
+
+void Person::returnBook(Person* p, int bookID, int maxCodes) {
+    // decrease count of rentals and remove book ID from codes
+    p->setCount(p->getCount() - 1);
+    for (int i = 0; i < maxCodes; i++) {
+        if (p->getCodes()[i] == bookID) {
+            p->getCodes()[i] = 0;
+            break;
+        }
+    }
+}

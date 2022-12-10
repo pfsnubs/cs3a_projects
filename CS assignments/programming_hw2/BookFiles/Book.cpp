@@ -1,30 +1,19 @@
 #include "Book.h"
-using namespace std;
-
 #include <iostream>
 #include <string>
 #include <fstream>
 #include <iomanip>
+
+// Constants
 using namespace std;
 
 // Book constructors
-/*
-Book::Book() {
-    code = 0;
-    title = "";
-    available = 0;
-    rented = 0;
-};
-*/
-
 Book::Book(int code, string title, int available, int rented) {
     this->code = code;
     this->title = title;
     this->available = available;
     this->rented = rented;
 }
-
-// course fxns
 
 // mutators
 void Book::setCodeID(int newID) {
@@ -54,7 +43,7 @@ int Book::getRented() {
     return rented;
 };
 
-// Other
+// Functions
 void Book::attemptToRent() {
     // adjust rent and availability if rentable
     available--;

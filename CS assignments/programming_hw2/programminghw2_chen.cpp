@@ -2,39 +2,29 @@
 // Date: 12/11/2022
 // Homework Project 2
 
+// include libraries
 #include <string>
 #include <iostream>
 #include <fstream>
 #include <iomanip>
 #include <sstream>
 
+// include dependencies
 #include "BookFiles\\Book.h"
 #include "BookFiles\\BookNode.h"
 #include "PersonFiles\\Person.h"
 #include "PersonFiles\\PersonNode.h"
-
-using namespace std;
 
 // constants
 // header strings used for menu prints
 const string LINE_HEADER = "-------------------------";
 const string EQUAL_HEADER = "====================================================";
 const string HALF_EQUAL_HEADER = "=========================";   
-
 const int PERSON_LIST_TOTAL = 2;
 const int BOOK_LIST_TOTAL = 3;
+using namespace std;
 
-
-// prototype fxns
-
-/*
-fxn()
-    INPUT:
-    OUTPUT:
-*/
-//int menu1();
-
-
+// structs
 struct ErrorMessage {
 public:
     string error;
@@ -43,6 +33,146 @@ public:
     };
 };
 
+// prototype fxns
+/*
+personByID()
+    INPUT: 
+           Takes in a dynamic array of PersonNode pointers person
+           and an integer id to look for person
+    OUTPUT:
+           Searches through array lists of person to find
+           the specific ID and returns back node pointer to
+           the person node
+*/
+PersonNodePtr personByID(PersonNodePtr* person, int id);
+
+/*
+personByName()
+    INPUT:
+           Takes in a dynamic array of PersonNode pointers person
+           and an string name to look for person
+    OUTPUT:
+           Searches through array lists of person to find
+           the specific name and returns back node pointer to
+           the person node
+*/
+PersonNodePtr personByName(PersonNodePtr* person, string name);
+
+/*
+bookByCode()
+    INPUT:
+           Takes in a dynamic array of BookNode pointers books
+           and an int code to look for book based off code
+    OUTPUT:
+           Searches through array lists of books to find
+           the specific BookNode and returns back a 
+           BookNodePtr that points to the node
+*/
+BookNodePtr bookByCode(BookNodePtr* books, int code);
+
+/*
+bookByTitle()
+    INPUT:
+           Takes in a dynamic array of BookNode pointers books
+           and an string title to find book title of
+    OUTPUT:
+           Searches through array lists of books to find
+           the specific BookNode and returns back a
+           BookNodePtr that points to the node based off 
+           book title name
+*/
+BookNodePtr bookByTitle(BookNodePtr* books, string title);
+
+/*
+initPersonList()
+    INPUT:
+           Takes in a string dir that opens up to file directory,
+           a pointer of PersonNodePtr person to access
+           dynamic array of PersonNode categories
+    OUTPUT:
+           Reads through dir of file and places
+           newly-created PersonNode class into 
+           pointer of PersonNodePtr to fill in entries of
+           its dynamic array
+*/
+void initPersonList(string dir, PersonNodePtr* person);
+
+/*
+initBookList()
+    INPUT:
+           Takes in a string dir that opens up to file directory,
+           a pointer of BookNodePtr books to access
+           dynamic array of BookNode categories
+    OUTPUT:
+           Reads through dir of file and places
+           newly-created BookNode classes into
+           entries of dynamic array in books
+*/
+void initBookList(string dir, BookNodePtr* books);
+
+/*
+menu1()
+    INPUT:
+           Takes in a pointer of BookNodePtr books
+           aka the list of BookNodes and requests 
+           user to input a book's code and title
+    OUTPUT:
+           Prints out all information of the
+           specified book and its contents 
+           of availability
+*/
+void menu1(BookNodePtr* books);
+
+/*
+menu2()
+    INPUT:
+           Takes in the list of PersonNodePtr dynamic array,
+           and BookNodePtr dynamic array and
+           requests user to enter user id and book title
+    OUTPUT:
+           Follows up with user to input a choice to
+           rent a book or not based off book title,
+           and lets them rent book to their collection
+*/
+void menu2(PersonNodePtr* person, BookNodePtr* books);
+
+/*
+menu3()
+    INPUT:
+           Takes in the list of PersonNodePtr dynamic array,
+           and BookNodePtr dynamic array and
+           requests user to enter user id and book code
+    OUTPUT:
+           Follows up with user to input a choice to
+           return a book or not,
+           and lets them place back book to the library
+*/
+void menu3(PersonNodePtr* person, BookNodePtr* books);
+
+/*
+menu4()
+    INPUT:
+           Takes in the list of PersonNodePtr dynamic array,
+           and BookNodePtr dynamic array and
+           requests user to enter user id and book code
+    OUTPUT:
+           Prints out information about user's
+           total rented books and info on them
+*/
+void menu4(PersonNodePtr* person, BookNodePtr* books);
+
+/*
+menu5()
+    INPUT:
+           Takes in the list of BookNode dynamic array,
+           and BookNode dynamic array and
+           requests user to enter book code and book title
+    OUTPUT:
+           Prints out all books available in library
+           and their code, title, availability, 
+           and # of already-rented copies
+*/
+void menu5(BookNodePtr* books);
 
 // functions
 PersonNodePtr personByID(PersonNodePtr* person, int id) {
@@ -173,8 +303,7 @@ BookNodePtr bookByTitle(BookNodePtr* books, string title) {
     return selectedNode;
 }
 
-
-void initPersonList(string dir, PersonNodePtr* person, const int listTotal) {    
+void initPersonList(string dir, PersonNodePtr* person) {    
     // find heads of list
     PersonNodePtr& teacherList = person[0];
     PersonNodePtr& studentList = person[1];  
@@ -290,7 +419,7 @@ void initPersonList(string dir, PersonNodePtr* person, const int listTotal) {
     }
 }
 
-void initBookList(string dir, BookNodePtr* books, const int listTotal) {
+void initBookList(string dir, BookNodePtr* books) {
     // find heads of list
     BookNodePtr& childBookList = books[0];
     BookNodePtr& compBooklist = books[1];
@@ -431,73 +560,74 @@ void initBookList(string dir, BookNodePtr* books, const int listTotal) {
     }
 }
 
-void menu1(BookNodePtr* books, const int listTotal) {
-    int codeSearch;
-    cout << "Enter code : ";
-    cin >> codeSearch;
+void menu1(BookNodePtr* books) {
+    BookNodePtr selectedBook = nullptr;
 
-    string titleSearch;
-    cout << "Enter title : ";
-    cin >> titleSearch;
+    // handle error inputs for user id and book code
+    int codeSearch = -1;
+    while (codeSearch == -1) {
+        cout << "Enter code : ";
+        try {
+            cin >> codeSearch;
 
-    // try to find and access book
-    BookNodePtr& childBookList = books[0];
-    BookNodePtr& compBooklist = books[1];
-    BookNodePtr& novelList = books[2];
-    BookNodePtr selectedList = childBookList;
+            // clear out chars if errored
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            selectedBook = bookByCode(books, codeSearch);
 
-    // children's books from 1001-2000
-    bool foundBook = false;
+            // verify w/ title input
+            string titleSearch = "";
+            cout << "Enter title : ";
+            cin >> titleSearch;
+
+            // error check: book name must match title input
+            if (selectedBook->data->getBookName() != titleSearch) {
+                throw ErrorMessage("ID and title does not match, please try again.\n");
+            }
+        }
+        catch (ErrorMessage err) {
+            codeSearch = -1;
+            cout << err.error << endl;
+        }
+    }    
+
+    // look through entry to find book
+    Book* bookPtr = selectedBook->data;
     string bookType;
     if (codeSearch >= 1001 && codeSearch <= 2000) {
         bookType = "children's";
-        selectedList = childBookList;
     }
     // CS books from ID 2001-3000
     else if (codeSearch >= 2001 && codeSearch <= 3000) {
         bookType = "computer";
-        selectedList = compBooklist;
     }
     // novel books from ID 3001-4000
     else if (codeSearch >= 3001 && codeSearch <= 4000) {
         bookType = "novel";
-        selectedList = novelList;
     }
 
-    // look through entry to find book
-    Book* bookPtr = nullptr;
-    for (BookNodePtr temp = selectedList; temp != nullptr; temp = temp->link) {
-        if (temp->data->getCodeID() == codeSearch
-            && temp->data->getBookName() == titleSearch) {
-            bookPtr = temp->data;
-            foundBook = true;
-        }
-    }
+    cout << endl;
+    cout << bookPtr->getBookName() << "(" << bookPtr->getCodeID() << ") exists." << endl;
+    cout << "category : " << bookType << endl;
 
-    if (foundBook) {
-        cout << bookPtr->getBookName() << "(" << bookPtr->getCodeID() << ") exists." << endl;
-        cout << "category : " << bookType << endl;
-
-        // print special quantity from each book type
-        if (bookType == "children's") {
-            cout << "age : " << bookPtr->getAge() << endl;
-        }
-        else if (bookType == "computer") {
-            cout << "publisher : " << bookPtr->getPublisher() << endl;
-        }
-        else if (bookType == "novel") {
-            cout << "publish date : " << bookPtr->getPublishDate() << endl;
-        }
-        cout << bookPtr->getAvailable() << " available, " << bookPtr->getRented() << " rented" << endl;
+    // print special quantity from each book type
+    if (bookType == "children's") {
+        cout << "age : " << bookPtr->getAge() << endl;
     }
+    else if (bookType == "computer") {
+        cout << "publisher : " << bookPtr->getPublisher() << endl;
+    }
+    else if (bookType == "novel") {
+        cout << "publish date : " << bookPtr->getPublishDate() << endl;
+    }
+    cout << bookPtr->getAvailable() << " available, " << bookPtr->getRented() << " rented\n" << endl;
 }
 
-void menu2(PersonNodePtr* person, const int personTotal, BookNodePtr* books, const int bookTotal) {
+void menu2(PersonNodePtr* person, BookNodePtr* books) {
     PersonNodePtr selectedPerson = nullptr;
     BookNodePtr selectedBook = nullptr;
     int personID;
     int bookID;
-    int maxRentals;
 
     // handle error inputs for user id and book title
     int userId = -1;
@@ -513,21 +643,22 @@ void menu2(PersonNodePtr* person, const int personTotal, BookNodePtr* books, con
 
             // initialize person ID
             personID = selectedPerson->data->getId();
-
-            // initialize max rentals person can rent
-            // teachers from ID 1-100
-            if (personID >= 1 && personID <= 100) {
-                maxRentals = TEACHER_CODES;
-            }
-            // students from ID 101-300
-            else if (personID >= 101 && personID <= 300) {
-                maxRentals = STUDENT_CODES;
-            }
         }
         catch (ErrorMessage err) {
             userId = -1;
             cout << err.error << endl;
         }
+    }
+
+    int maxRentals;
+    // initialize max rentals person can rent
+    // teachers from ID 1-100
+    if (personID >= 1 && personID <= 100) {
+        maxRentals = TEACHER_CODES;
+    }
+    // students from ID 101-300
+    else if (personID >= 101 && personID <= 300) {
+        maxRentals = STUDENT_CODES;
     }
 
     string titleSearch = "";
@@ -543,12 +674,12 @@ void menu2(PersonNodePtr* person, const int personTotal, BookNodePtr* books, con
 
             // error check: check if book is available
             if (bookAvailables == 0) {
-                throw ErrorMessage("All books of this code is unavailable to rent. Please try again.");
+                throw ErrorMessage("All books of this code is unavailable to rent. Please try again.\n");
             }
 
             // error check: check if person has book already
             if (selectedPerson->data->checkCodeExists(selectedPerson->data, bookID, maxRentals)) {
-                throw ErrorMessage("You cannot rent the same book twice. Please try again.");
+                throw ErrorMessage("You cannot rent the same book twice. Please try again.\n");
             }
         }
         catch (ErrorMessage err) {
@@ -557,9 +688,10 @@ void menu2(PersonNodePtr* person, const int personTotal, BookNodePtr* books, con
         }
     }
 
-    
+    // print out person's total books rented
     int personCount = selectedPerson->data->getCount();
     string personName = selectedPerson->data->getName();
+    cout << endl;
     if (personCount == 1) {
         cout << "You are " << personName
             << ". You rented " << personCount << " book."
@@ -582,23 +714,21 @@ void menu2(PersonNodePtr* person, const int personTotal, BookNodePtr* books, con
                 throw ErrorMessage("Invalid choice. Please enter again.\n");
             }
 
-            // error check: cannot exceed max rentals
-            if (personCount == maxRentals) {
-                throw ErrorMessage("This person cannot rent any more books. Please try another choice.");
-            }
-
             // proceed choices
             if (choice == 'y') {
+                // error check: cannot exceed max rentals
+                if (personCount == maxRentals) {
+                    throw ErrorMessage("This person cannot rent any more books. Please try another choice.\n");
+                }
+
                 // start transaction for rental
-                cout << selectedPerson << endl;
                 selectedPerson->data->rentBook(selectedPerson->data, bookID, maxRentals);
                 selectedBook->data->attemptToRent();
 
-                cout << "***** Rent succeeded. Check your info!" << endl;
-                cout << selectedPerson << endl;
+                cout << "***** Rent succeeded. Check your info!\n" << endl;
             }
             else if (choice == 'n') {
-                cout << "***** Rent cancelled." << endl;
+                cout << "***** Rent cancelled.\n" << endl;
             }
         }
         catch (ErrorMessage err) {
@@ -608,14 +738,12 @@ void menu2(PersonNodePtr* person, const int personTotal, BookNodePtr* books, con
     }    
 }
 
-void menu3(PersonNodePtr* person, const int personTotal, BookNodePtr* books, const int bookTotal) {
+void menu3(PersonNodePtr* person, BookNodePtr* books) {
     PersonNodePtr selectedPerson = nullptr;
     BookNodePtr selectedBook = nullptr;
     int personID;
-    int bookID;
-    int maxRentals;
 
-    // handle error inputs for user id and book title
+    // handle error inputs for user id and book code
     int userId = -1;
     while (userId == -1) {
         cout << "Enter id : ";
@@ -629,21 +757,22 @@ void menu3(PersonNodePtr* person, const int personTotal, BookNodePtr* books, con
 
             // initialize person ID
             personID = selectedPerson->data->getId();
-
-            // initialize max rentals person can rent
-            // teachers from ID 1-100
-            if (personID >= 1 && personID <= 100) {
-                maxRentals = TEACHER_CODES;
-            }
-            // students from ID 101-300
-            else if (personID >= 101 && personID <= 300) {
-                maxRentals = STUDENT_CODES;
-            }
         }
         catch (ErrorMessage err) {
             userId = -1;
             cout << err.error << endl;
         }
+    }
+
+    // initialize max rentals person can rent
+    int maxRentals;
+    // teachers from ID 1-100
+    if (personID >= 1 && personID <= 100) {
+        maxRentals = TEACHER_CODES;
+    }
+    // students from ID 101-300
+    else if (personID >= 101 && personID <= 300) {
+        maxRentals = STUDENT_CODES;
     }
 
     int bookCode = -1;
@@ -658,8 +787,8 @@ void menu3(PersonNodePtr* person, const int personTotal, BookNodePtr* books, con
             selectedBook = bookByCode(books, bookCode);
 
             // error check: check if book is available
-            if (selectedPerson->data->checkCodeExists(selectedPerson->data, bookCode, maxRentals)) {
-                throw ErrorMessage("All books of this code is unavailable to rent. Please try again.");
+            if (!selectedPerson->data->checkCodeExists(selectedPerson->data, bookCode, maxRentals)) {
+                throw ErrorMessage("User does not have this book. Please try again.\n");
             }
         }
         catch (ErrorMessage err) {
@@ -668,24 +797,28 @@ void menu3(PersonNodePtr* person, const int personTotal, BookNodePtr* books, con
         }
     }
 
+    cout << endl;
     char choice = ' ';
     while (choice == ' ') {
         cout << "Do you want to return '" << selectedBook->data->getBookName() << "' (y/n)? ";
         try {
             cin >> choice;
 
+            // error check: must be y or n char
+            if (choice != 'y' && choice != 'n') {
+                throw ErrorMessage("Invalid choice. Please enter again.\n");
+            }
+
             // proceed choices
             if (choice == 'y') {
                 // start transaction for returns
-                cout << selectedPerson << endl;
-                selectedPerson->data->returnBook(selectedPerson->data, bookID, maxRentals);
+                selectedPerson->data->returnBook(selectedPerson->data, bookCode, maxRentals);
                 selectedBook->data->attemptToRent();
 
-                cout << "***** Return succeeded. Check your info!" << endl;
-                cout << selectedPerson << endl;
+                cout << "***** Return succeeded. Check your info!\n" << endl;
             }
             else if (choice == 'n') {
-                cout << "***** Return failed. Please try again." << endl;
+                cout << "***** Return cancelled.\n" << endl;
             }
         }
         catch (ErrorMessage err) {
@@ -695,42 +828,65 @@ void menu3(PersonNodePtr* person, const int personTotal, BookNodePtr* books, con
     }
 }
 
-void menu4(PersonNodePtr* person, const int personTotal, BookNodePtr* books, const int bookTotal) {
-    // TODO: For enter id and name for the other menus too, make a function to check both name and code
+void menu4(PersonNodePtr* person, BookNodePtr* books) {
     // handle error inputs for user id and book title
-    int userId;
-    cout << "Enter id : ";
-    cin >> userId;
+    PersonNodePtr selectedPerson = nullptr;
 
-    string name;
-    cout << "Enter your name : ";
-    cin >> name;
+    // handle error inputs for user id and user name
+    int userId = -1;
+    while (userId == -1) {
+        cout << "Enter id : ";
+        try {
+            cin >> userId;
+
+            // clear out chars if errored
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            selectedPerson = personByID(person, userId);
+
+            // verify w/ name input
+            string name = "";
+            cout << "Enter your name : ";
+            cin >> name;
+
+            // error check: make sure name and ID of person aligns
+            if (selectedPerson->data->getName() != name) {
+                throw ErrorMessage("ID and name does not match, please try again.\n");
+            }
+        }
+        catch (ErrorMessage err) {
+            userId = -1;
+            cout << err.error << endl;
+        }
+    }
+
+    // initialize max rentals person can rent
+    int maxRentals;
+    // teachers from ID 1-100
+    if (userId >= 1 && userId <= 100) {
+        maxRentals = TEACHER_CODES;
+    }
+    // students from ID 101-300
+    else if (userId >= 101 && userId <= 300) {
+        maxRentals = STUDENT_CODES;
+    }
 
     // try to find and access book
-    PersonNodePtr selectedPerson = personByID(person, userId);
     int countBooks = selectedPerson->data->getCount();
+    cout << endl;
     if (countBooks == 1) {
         cout << "You rented " << countBooks << " book." << endl;
     }
     else {
         cout << "You rented " << countBooks << " books." << endl;
     }
-    
-    int maxCodes;
-    // list all books from Teacher from ID 1-100
-    if (userId >= 1 && userId <= 100) {
-        maxCodes = TEACHER_CODES;
-    }
-    // list all books from Student from ID 101-300
-    else if (userId >= 101 && userId <= 300) {
-        maxCodes = STUDENT_CODES;
-    }
 
     int* allCodes = selectedPerson->data->getCodes();
-    for (int i = 0; i < maxCodes; i++) {
+    for (int i = 0; i < maxRentals; i++) {
         if (allCodes[i] != 0) {
             BookNodePtr selectedBook = bookByCode(books, allCodes[i]);
-            cout << "* " << selectedBook->data->getBookName() << " - ";
+            cout << "* " << selectedBook->data->getBookName()
+                << "(" << selectedBook->data->getCodeID() << ") - ";
 
             // show age of children's books from ID 1001-2000
             if (allCodes[i] >= 1001 && allCodes[i] <= 2000) {
@@ -749,7 +905,7 @@ void menu4(PersonNodePtr* person, const int personTotal, BookNodePtr* books, con
     cout << endl;
 }
 
-void menu5(BookNodePtr* books, const int listTotal) {
+void menu5(BookNodePtr* books) {
     // try to find and access book
     BookNodePtr& childBookList = books[0];
     BookNodePtr& compBooklist = books[1];
@@ -837,21 +993,18 @@ void menu5(BookNodePtr* books, const int listTotal) {
             << endl;
     }
     cout << endl;
+    cout << endl;
 }
-
 
 int main()
 {
     PersonNodePtr person[PERSON_LIST_TOTAL];
     BookNodePtr book[BOOK_LIST_TOTAL];
-    initPersonList("programming_hw2\\person.txt", person, PERSON_LIST_TOTAL);
-    initBookList("programming_hw2\\book.txt", book, BOOK_LIST_TOTAL);
-
-    cout << person[0];
+    initPersonList("programming_hw2\\person.txt", person);
+    initBookList("programming_hw2\\book.txt", book);
 
     // display menu
     bool stopLoop = false;
-
     while (!stopLoop) {
         cout << LINE_HEADER << endl;
         cout << "\tMenu" << endl;
@@ -881,19 +1034,19 @@ int main()
                 // handle menu thru function input
                 switch (input) {
                 case 1:
-                    menu1(book, BOOK_LIST_TOTAL);
+                    menu1(book);
                     break;
                 case 2:
-                    menu2(person, PERSON_LIST_TOTAL, book, BOOK_LIST_TOTAL);
+                    menu2(person, book);
                     break;
                 case 3:
-                    menu3(person, PERSON_LIST_TOTAL, book, BOOK_LIST_TOTAL);
+                    menu3(person, book);
                     break;
                 case 4:
-                    menu4(person, PERSON_LIST_TOTAL, book, BOOK_LIST_TOTAL);
+                    menu4(person, book);
                     break;
                 case 5:
-                    menu5(book, BOOK_LIST_TOTAL);
+                    menu5(book);
                     break;
                 case 6:
                     stopLoop = true;
